@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\student;
+use App\Student;
+use App\Promo;
+use App\Pang;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -14,7 +16,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = Student::all();
+        return view("students.index", compact("students"));
     }
 
     /**
@@ -24,7 +27,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        $promotions = Promo::all();
+        return view("students.add", compact("promotions"));
     }
 
     /**
@@ -35,7 +39,19 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "firstname" => "required",
+            "lastname" => "required",
+            "promotion" => "required",
+        ]);
+
+        $promotion = Promo::find($request->input("promotion"));
+        $student = $promotion->student()->create([
+            "first_name" => $request->input("firstname"),
+            "last_name" => $request->input("lastname"),
+        ]);
+        $student->pang()->create();
+        return redirect("/student");
     }
 
     /**

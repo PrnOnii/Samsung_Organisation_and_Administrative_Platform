@@ -17,3 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get("/student", "StudentController@index");
+Route::get("/student/add", "StudentController@create");
+Route::post("/student/add", "StudentController@store");
+Route::get("/student/show", "StudentController@show");
+
+Route::get("/promo/add", "PromoController@create");
+Route::post("/promo/add", "PromoController@store");
