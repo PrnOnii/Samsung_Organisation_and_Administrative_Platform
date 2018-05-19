@@ -54,6 +54,32 @@ class StudentController extends Controller
         return redirect("/student");
     }
 
+    public function createBulk() {
+        $promotions = Promo::all();
+        return view("students.addBulk", compact("promotions"));
+    }
+
+    public function storeBulk(Request $request)
+    {
+        $request->validate([
+            "names" => "required",
+            "promotion" => "required",
+        ]);
+
+        $names = explode("\n", $request->input("names"));
+        $promotion = Promo::find($request->input("promotion"));
+
+        foreach ($names as $name) {
+            $parts = explode(" ", $name);
+            $student = $promotion->student()->create([
+                "last_name" => $parts[0],
+                "first_name" => $parts[1],
+            ]);
+            $student->pang()->create();
+        }
+        return redirect("/student");
+    }
+
     /**
      * Display the specified resource.
      *
