@@ -19,8 +19,8 @@
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Promotion</th>
                         <th>Pangs</th>
+                        <th>Promotion</th>
                     </tr>
                     </thead>
                     <tbody>
