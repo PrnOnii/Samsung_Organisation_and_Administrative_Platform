@@ -39,6 +39,15 @@
                                 {{ Auth::user()->name }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a href="{{ route('addStudent') }}" class="dropdown-item">
+                                    Add a student
+                                </a>
+                                <a href="{{ route('addStudentBulk') }}" class="dropdown-item">
+                                    Add students in bulk
+                                </a>
+                                <a href="{{ route('addPromo') }}" class="dropdown-item">
+                                    Add promo
+                                </a>
                                 <a href="{{ route('logout') }}" class="dropdown-item"
                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                     Logout
@@ -73,9 +82,7 @@
         });
 
         // DataTable
-        var table = $('#annonceTable').DataTable( {
-            "order": [[ 0, "desc" ]]
-        });
+        var table = $('.dataTable').DataTable();
 
         // Apply the search
         table.columns().every(function () {

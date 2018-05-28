@@ -12,7 +12,7 @@ class Pang extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'promo',
+        'total', 'student_id'
     ];
 
     /**
