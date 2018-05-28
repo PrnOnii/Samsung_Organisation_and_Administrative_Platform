@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\student;
+use App\Student;
+use App\Promo;
+use App\Pang;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = Student::all();
+        return view("students.index", compact("students"));
     }
 
     /**
@@ -24,7 +31,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        $promotions = Promo::all();
+        return view("students.add", compact("promotions"));
     }
 
     /**
@@ -35,7 +43,45 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "firstname" => "required",
+            "lastname" => "required",
+            "promotion" => "required",
+        ]);
+
+        $promotion = Promo::find($request->input("promotion"));
+        $student = $promotion->student()->create([
+            "first_name" => $request->input("firstname"),
+            "last_name" => $request->input("lastname"),
+        ]);
+        $student->pang()->create();
+        return redirect("/student");
+    }
+
+    public function createBulk() {
+        $promotions = Promo::all();
+        return view("students.addBulk", compact("promotions"));
+    }
+
+    public function storeBulk(Request $request)
+    {
+        $request->validate([
+            "names" => "required",
+            "promotion" => "required",
+        ]);
+
+        $names = explode("\n", $request->input("names"));
+        $promotion = Promo::find($request->input("promotion"));
+
+        foreach ($names as $name) {
+            $parts = explode(" ", $name);
+            $student = $promotion->student()->create([
+                "last_name" => $parts[0],
+                "first_name" => $parts[1],
+            ]);
+            $student->pang()->create();
+        }
+        return redirect("/student");
     }
 
     /**

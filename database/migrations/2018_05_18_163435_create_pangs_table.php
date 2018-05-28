@@ -15,7 +15,7 @@ class CreatePangsTable extends Migration
     {
         Schema::create('pangs', function (Blueprint $table) {
             $table->increments('id');
-            $table->float("total");
+            $table->float("total")->default(1000);
             $table->unsignedInteger("student_id");
             $table->foreign("student_id")->references("id")->on("students")->onDelete("cascade");
             $table->timestamps();
