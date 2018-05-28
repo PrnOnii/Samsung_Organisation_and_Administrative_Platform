@@ -17,13 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get("/student", "StudentController@index");
-Route::get("/student/add", "StudentController@create");
+Route::get("/student", "StudentController@index")->name('students');
+Route::get("/student/add", "StudentController@create")->name('addStudent');
 Route::post("/student/add", "StudentController@store");
-Route::get("/student/addBulk", "StudentController@createBulk");
+Route::get("/student/addBulk", "StudentController@createBulk")->name('addStudentBulk');
 Route::post("/student/addBulk", "StudentController@storeBulk");
-Route::get("/student/show", "StudentController@show");
+Route::get("/student/show", "StudentController@show")->name('showStudent');
 
-Route::get("/promo/add", "PromoController@create");
+Route::get("/promo/add", "PromoController@create")->name('addPromo');
 Route::post("/promo/add", "PromoController@store");
 
