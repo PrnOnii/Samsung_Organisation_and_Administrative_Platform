@@ -27,16 +27,16 @@
                     @foreach($students as $student)
                         <tr>
                             <td>{{ $student->first_name }} {{ $student->last_name }}</td>
-                            <td>{{ $student->promo->name }}</td>
                             <td>{{ $student->pang->total }}</td>
+                            <td>{{ $student->promo->name }}</td>
                         </tr>
                     @endforeach
                     </tbody>
                     <tfoot>
                     <tr>
                         <th>Name</th>
-                        <th>Promotion</th>
                         <th>Pangs</th>
+                        <th>Promotion</th>
                     </tr>
                     </tfoot>
                 </table>

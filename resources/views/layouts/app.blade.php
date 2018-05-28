@@ -73,9 +73,7 @@
         });
 
         // DataTable
-        var table = $('#annonceTable').DataTable( {
-            "order": [[ 0, "desc" ]]
-        });
+        var table = $('.dataTable').DataTable();
 
         // Apply the search
         table.columns().every(function () {
