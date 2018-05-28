@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\promo;
+use App\Promo;
 use Illuminate\Http\Request;
 
 class PromoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +28,7 @@ class PromoController extends Controller
      */
     public function create()
     {
-        //
+        return view("promo.add");
     }
 
     /**
@@ -35,7 +39,10 @@ class PromoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Promo::create([
+            "name" => $request->input("name"),
+        ]);
+        return redirect("/student");
     }
 
     /**
