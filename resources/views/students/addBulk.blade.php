@@ -1,74 +1,53 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: kevan
- * Date: 5/19/18
- * Time: 4:07 PM
- */ ?>
-
 @extends("layouts.app")
 @section("content")
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h1>Add Student in Bulk</h1></div>
-                    <div class="panel-body">
-                        <form role="form" method="post" action="/student/addBulk">
-                            {!! csrf_field() !!}
+<div class="container">
+    <h1 class="mt-3 mb-3">Ajouter plusieurs etudiants</h1>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <div class="card">
+                <div class="card-body">
+                    <form role="form" method="post" action="{{ url('/student/addBulk') }}">
+                        {!! csrf_field() !!}
 
-                            <div class="form-group{{ $errors->has('names') ? ' has-error' : '' }}">
-                                <label for="names" class="col-12 control-label">
-                                    Names<br>
-                                    <p class="text-muted">Add names with the following method : <br>
-                                        Lastname Firstname<br>
-                                        Lastname Firstname<br>
-                                        if there are spaces in the name, replace them with "-"
-                                    </p>
-                                </label>
-
-
-                                <div class="col-12">
-                                    <textarea id="names" type="text" class="form-control" name="names" required autofocus></textarea>
-
-                                    @if ($errors->has('names'))
-                                        <span class="help-block">
-                                <strong>{{ $errors->first('names') }}</strong>
-                            </span>
-                                    @endif
-                                </div>
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
+                        @endif  
 
-                            <div class="form-group{{ $errors->has('promo') ? ' has-error' : '' }}">
-                                <label for="promotion" class="col-12 control-label">Promotion</label>
-
-                                <div class="col-12">
-                                    <select id="promotion" class="form-control" name="promotion" required>
-                                        <option value="0">Choose a Promotion...</option>
-                                        @foreach($promotions as $promotion)
-                                            <option value="{{ $promotion->id }}">{{ $promotion->name }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    @if ($errors->has('promo'))
-                                        <span class="help-block">
-                                <strong>{{ $errors->first('promo') }}</strong>
-                            </span>
-                                    @endif
-                                </div>
+                        <div class="form-group">
+                            <div class="alert alert-primary" role="alert">
+                                Ajoutez les etudiants sous la forme <code>nom prenom</code> suivi d'un retour a la ligne.
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">
-                                        Add Students
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="form-group">
+                            <textarea id="names" rows="5" type="text" class="form-control" name="names" required autofocus></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="promotion">Promotion</label>
+                            <select id="promotion" class="form-control" name="promotion" required>
+                                <option value="0">Choisir une promotion</option>
+                                @foreach($promotions as $promotion)
+                                    <option value="{{ $promotion->id }}">{{ $promotion->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                Ajouter les etudiants
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection
