@@ -140,10 +140,13 @@ class StudentController extends Controller
     public function checkIn(Request $request) {
         $date = Carbon::now("Europe/Paris");
         $student = Student::find($request->input("id"));
+        if($student)
         $student->day()->create([
             "day" => $date->toDateString(),
             "arrived_at" => $date->toTimeString(),
         ]);
+//        ProcessPangs::dispatch(Student::find($request->input("id")));
+
         return redirect("/student");
     }
 

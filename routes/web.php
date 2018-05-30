@@ -30,6 +30,7 @@ Route::post("/student/checkIn", "StudentController@checkIn")->name("checkIn");
 Route::post("/student/checkOut", "StudentController@checkOut")->name("checkOut");
 
 Route::get("/settings/2019", function () {
+    if (!\App\PangSettings::first())
     \App\PangSettings::create([
         "current_promo_id" => 1
     ]);
