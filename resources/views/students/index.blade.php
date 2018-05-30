@@ -29,13 +29,13 @@
                     @foreach($students as $student)
                         <tr>
                             <td>{{ $student->first_name }} {{ $student->last_name }}</td>
-                            <td>{{ $student->pang->total }}</td>
+                            <td>{{ $student->pangs }}</td>
                             <td>{{ $student->promo->name }}</td>
                             <td>
                             @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString())
                                 {{ $student->checkIn->arrived_at }}
                             @else
-                                <form method="post" action="{{ route("checkIn") }}">
+                                <form method="post" class="checkIn" action="{{ route("checkIn") }}">
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="id" value="{{ $student->id }}">
                                     <button type="submit" class="btn btn-success">Check-In</button>
@@ -47,7 +47,7 @@
                                 {{ $student->checkIn->leaved_at }}
                             @else
                                 @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString())
-                                <form method="post" action="{{ route("checkOut") }}">
+                                <form method="post" class="checkOut" action="{{ route("checkOut") }}">
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="id" value="{{ $student->id }}">
                                     <button type="submit" class="btn btn-warning">Check-Out</button>

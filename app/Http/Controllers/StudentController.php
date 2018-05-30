@@ -27,6 +27,16 @@ class StudentController extends Controller
         $students = Student::all();
         foreach ($students as $student) {
             $student->checkIn = Day::orderBy("day", "desc")->where("student_id", $student->id)->first();
+            $total = 1000;
+            foreach($student->day as $day)
+            {
+                $total += $day->difference;
+            }
+            if($total > 1000)
+                $total = 1000;
+            if($total < 0)
+                $total = 0;
+            $student->pangs = $total;
         }
         return view("students.index", compact("students"));
     }
@@ -145,9 +155,7 @@ class StudentController extends Controller
             "day" => $date->toDateString(),
             "arrived_at" => $date->toTimeString(),
         ]);
-//        ProcessPangs::dispatch(Student::find($request->input("id")));
-
-        return redirect("/student");
+        echo $date->toTimeString();
     }
 
     public function checkOut(Request $request) {
@@ -156,6 +164,6 @@ class StudentController extends Controller
             ->where("student_id", $request->input("id"))
             ->update(["leaved_at" => $date->toTimeString()]);
         ProcessPangs::dispatch(Student::find($request->input("id")));
-        return redirect("/student");
+        echo $date->toTimeString();
     }
 }
