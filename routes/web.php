@@ -11,12 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
+Route::get("/", "StudentController@index")->name('home');
 Route::get("/student", "StudentController@index")->name('students');
 Route::get("/student/add", "StudentController@create")->name('addStudent');
 Route::post("/student/add", "StudentController@store");

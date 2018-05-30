@@ -1,80 +1,53 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: kevan
- * Date: 5/18/18
- * Time: 6:47 PM
- */ ?>
-
 @extends("layouts.app")
 @section("content")
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h1>New Student</h1></div>
-                    <div class="panel-body">
-                        <form role="form" method="post" action="/student/add">
-                            {!! csrf_field() !!}
+<div class="container">
+    <h1 class="mt-3 mb-3">Ajouter un etudiant</h1>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <div class="card">
+                <div class="card-body">
+                    <form role="form" method="post" action="{{ url('/student/add') }}">
+                        {!! csrf_field() !!}
 
-                            <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                                <label for="f_name" class="col-12 control-label">First Name</label>
-
-                                <div class="col-12">
-                                    <input id="f_name" type="text" class="form-control" name="firstname" required autofocus>
-
-                                    @if ($errors->has('first_name'))
-                                        <span class="help-block">
-                                <strong>{{ $errors->first('first_name') }}</strong>
-                            </span>
-                                    @endif
-                                </div>
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
+                        @endif
 
-                            <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-                                <label for="l_name" class="col-12 control-label">Last Name</label>
+                        <div class="form-group">
+                            <label for="f_name">Prenom</label>
+                            <input id="f_name" type="text" class="form-control" name="firstname" required autofocus>
+                        </div>
 
-                                <div class="col-12">
-                                    <input id="l_name" type="text" class="form-control" name="lastname" required autofocus>
+                        <div class="form-group">
+                            <label for="l_name">Nom</label>
+                            <input id="l_name" type="text" class="form-control" name="lastname" required>
+                        </div>
 
-                                    @if ($errors->has('last_name'))
-                                        <span class="help-block">
-                                <strong>{{ $errors->first('last_name') }}</strong>
-                            </span>
-                                    @endif
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label for="promotion">Promotion</label>
+                            <select id="promotion" class="form-control" name="promotion" required>
+                                <option value="0">Choisir une promotion</option>
+                                @foreach($promotions as $promotion)
+                                    <option value="{{ $promotion->id }}">{{ $promotion->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                            <div class="form-group{{ $errors->has('promo') ? ' has-error' : '' }}">
-                                <label for="promotion" class="col-12 control-label">Promotion</label>
-
-                                <div class="col-12">
-                                    <select id="promotion" class="form-control" name="promotion" required>
-                                        <option value="0">Choose a Promotion...</option>
-                                        @foreach($promotions as $promotion)
-                                            <option value="{{ $promotion->id }}">{{ $promotion->name }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    @if ($errors->has('promo'))
-                                        <span class="help-block">
-                                <strong>{{ $errors->first('promo') }}</strong>
-                            </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">
-                                        Add Student
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                Ajouter un etudiant
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection
