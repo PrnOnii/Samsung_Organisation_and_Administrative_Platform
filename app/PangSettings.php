@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Student extends Model
+class PangSettings extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,17 @@ class Student extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'promo',
+        "morning_early",
+        "morning_start",
+        "morning_late",
+        "morning_end",
+        "afternoon_start",
+        "afternoon_leave",
+        "afternoon_extra",
+        "afternoon_end",
+        "earning_pang",
+        "losing_pang",
+        "absent_loss"
     ];
 
     /**
@@ -23,19 +33,4 @@ class Student extends Model
     protected $hidden = [
 
     ];
-
-    public function promo()
-    {
-        return $this->belongsTo("App\Promo");
-    }
-
-    public function pang()
-    {
-        return $this->hasOne("App\Pang");
-    }
-
-    public function day()
-    {
-        return $this->hasMany("App\Day");
-    }
 }
