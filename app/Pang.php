@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Soap;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +26,6 @@ class Pang extends Model
 
     public function student()
     {
-        return $this->belongsTo("App\Student");
+        return $this->belongsTo("Soap\Student");
     }
 }

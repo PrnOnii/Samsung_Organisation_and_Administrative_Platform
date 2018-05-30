@@ -18,6 +18,7 @@
                 <table class="table dataTable">
                     <thead>
                     <tr>
+                        <th>Last Name</th>
                         <th>Name</th>
                         <th>Pangs</th>
                         <th>Promotion</th>
@@ -26,7 +27,8 @@
                     <tbody>
                     @foreach($students as $student)
                         <tr>
-                            <td>{{ $student->first_name }} {{ $student->last_name }}</td>
+                            <td> {{ $student->last_name }}</td>
+                            <td>{{ $student->first_name }}</td>
                             <td>{{ $student->pang->total }}</td>
                             <td>{{ $student->promo->name }}</td>
                         </tr>

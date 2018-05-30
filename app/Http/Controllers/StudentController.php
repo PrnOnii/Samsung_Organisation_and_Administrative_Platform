@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Soap\Http\Controllers;
 
-use App\Student;
-use App\Promo;
-use App\Pang;
+use Soap\Student;
+use Soap\Promo;
+use Soap\Pang;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -87,7 +87,7 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\student  $student
+     * @param  \Soap\student  $student
      * @return \Illuminate\Http\Response
      */
     public function show(student $student)
@@ -98,7 +98,7 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\student  $student
+     * @param  \Soap\student  $student
      * @return \Illuminate\Http\Response
      */
     public function edit(student $student)
@@ -110,7 +110,7 @@ class StudentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\student  $student
+     * @param  \Soap\student  $student
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, student $student)
@@ -121,7 +121,7 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\student  $student
+     * @param  \Soap\student  $student
      * @return \Illuminate\Http\Response
      */
     public function destroy(student $student)

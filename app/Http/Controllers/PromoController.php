@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Soap\Http\Controllers;
 
-use App\Promo;
+use Soap\Promo;
 use Illuminate\Http\Request;
 
 class PromoController extends Controller
@@ -48,7 +48,7 @@ class PromoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\promo  $promo
+     * @param  \Soap\promo  $promo
      * @return \Illuminate\Http\Response
      */
     public function show(promo $promo)
@@ -59,7 +59,7 @@ class PromoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\promo  $promo
+     * @param  \Soap\promo  $promo
      * @return \Illuminate\Http\Response
      */
     public function edit(promo $promo)
@@ -71,7 +71,7 @@ class PromoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\promo  $promo
+     * @param  \Soap\promo  $promo
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, promo $promo)
@@ -82,7 +82,7 @@ class PromoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\promo  $promo
+     * @param  \Soap\promo  $promo
      * @return \Illuminate\Http\Response
      */
     public function destroy(promo $promo)

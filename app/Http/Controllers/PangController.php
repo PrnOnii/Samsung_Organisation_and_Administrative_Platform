@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Soap\Http\Controllers;
 
-use App\pang;
+use Soap\pang;
 use Illuminate\Http\Request;
 
 class PangController extends Controller
@@ -45,7 +45,7 @@ class PangController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\pang  $pang
+     * @param  \Soap\pang  $pang
      * @return \Illuminate\Http\Response
      */
     public function show(pang $pang)
@@ -56,7 +56,7 @@ class PangController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\pang  $pang
+     * @param  \Soap\pang  $pang
      * @return \Illuminate\Http\Response
      */
     public function edit(pang $pang)
@@ -68,7 +68,7 @@ class PangController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\pang  $pang
+     * @param  \Soap\pang  $pang
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, pang $pang)
@@ -79,7 +79,7 @@ class PangController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\pang  $pang
+     * @param  \Soap\pang  $pang
      * @return \Illuminate\Http\Response
      */
     public function destroy(pang $pang)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Soap;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,11 +26,11 @@ class Student extends Model
 
     public function promo()
     {
-        return $this->belongsTo("App\Promo");
+        return $this->belongsTo("Soap\Promo");
     }
 
     public function pang()
     {
-        return $this->hasOne("App\Pang");
+        return $this->hasOne("Soap\Pang");
     }
 }

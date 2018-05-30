@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Soap;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +26,6 @@ class Promo extends Model
 
     public function student()
     {
-        return $this->hasMany("App\Student");
+        return $this->hasMany("Soap\Student");
     }
 }
