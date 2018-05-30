@@ -70,33 +70,10 @@
 </div>
 
 <!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        // Setup - add a text input to each footer cell
-        $('.dataTable tfoot th').each(function () {
-            var title = $(this).text();
-            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-        });
-
-        // DataTable
-        var table = $('.dataTable').DataTable();
-
-        // Apply the search
-        table.columns().every(function () {
-            var that = this;
-
-            $('input', this.footer()).on('keyup change', function () {
-                if (that.search() !== this.value) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-    });
-</script>
+<script src="{{ asset('js/datatableSearch.js') }}"></script>
+<script src="{{ asset('js/ajaxCheckIn.js') }}"></script>
 </body>
 </html>
