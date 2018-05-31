@@ -9,10 +9,7 @@
 @extends("layouts.app")
 @section("content")
     <div class="container">
-        <h1>Students</h1>
-        <div class="row">
-            <a role="button" class="btn btn-success ml-4 my-2" href="/student/add"><i class="fas fa-plus"></i> Add Student</a>
-        </div>
+        <h1 class="mt-3 mb-3">Liste des etudiants</h1>
         <div class="row">
             <div class="col-12">
                 <table class="table dataTable">
