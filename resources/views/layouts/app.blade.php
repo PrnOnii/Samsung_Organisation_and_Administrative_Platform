@@ -13,6 +13,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
 </head>
 <body>
@@ -29,6 +30,37 @@
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-users"></i> Etudiants
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <a href="{{ route('home') }}" class="dropdown-item">
+                                    <i class="fas fa-list"></i> Voir tous les etudiants
+                            </a>
+                            <a href="{{ route('addStudent') }}" class="dropdown-item">
+                                <i class="fas fa-plus"></i> Ajouter un etudiant
+                            </a>
+                            <a href="{{ route('addStudentBulk') }}" class="dropdown-item">
+                                <i class="fas fa-user-plus"></i> Ajouter plusieurs etudiants
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-graduation-cap"></i> Promotions
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <a href="{{ route('addPromo') }}" class="dropdown-item">
+                                Voir les promotions
+                            </a>
+                            <a href="{{ route('addStudentBulk') }}" class="dropdown-item">
+                                Ajouter une promotion
+                            </a>
+                        </div>
+                    </li>
                     @if (Auth::guest())
                         <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Login</a></li>
                         <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Register</a></li>
@@ -39,15 +71,6 @@
                                 {{ Auth::user()->name }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                <a href="{{ route('addStudent') }}" class="dropdown-item">
-                                    Add a student
-                                </a>
-                                <a href="{{ route('addStudentBulk') }}" class="dropdown-item">
-                                    Add students in bulk
-                                </a>
-                                <a href="{{ route('addPromo') }}" class="dropdown-item">
-                                    Add promo
-                                </a>
                                 <a href="{{ route('logout') }}" class="dropdown-item"
                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                     Logout
