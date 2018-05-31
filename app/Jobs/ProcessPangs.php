@@ -65,9 +65,16 @@ class ProcessPangs implements ShouldQueue
     public function handle()
     {
         foreach ($this->students as $student) {
-            $day = Day::where("day", $this->date->toDateString())->where("student_id", $student->id)->first();
+            if ( !$day = Day::where("day", $this->date->toDateString())->where("student_id", $student->id)->first() ) {
+                $day = Day::create([
+                    "student_id" => $student->id,
+                    "day" => $this->date->toDateString(),
+                    "difference" => 0,
+                ]);
+            }
             $arrive = ($day->arrived_at !== null) ? Carbon::createFromTimeString($day->arrived_at) : null;
             $leave = ($day->leaved_at !== null) ? Carbon::createFromTimeString($day->leaved_at) : null;
+
 
             $morning_loss = 0;
             $morning_gain = 0;
@@ -76,25 +83,33 @@ class ProcessPangs implements ShouldQueue
             $morning_absent = false;
             $afternoon_absent = false;
 
+            //  && $this->date < $this->afternoon_end
+
             if ($arrive !== null) {
                 // Check pangs loss
                 // Morning
-                if($arrive === null || $arrive >= $this->morning_end) {
+                if($arrive >= $this->morning_end) {
                     $morning_loss = $this->settings->absent_loss;
                 } elseif($arrive > $this->morning_late) {
                     $morning_loss += $arrive->diffInMinutes($this->morning_late) * $this->settings->losing_pang;
                 }
-                if($leave < $this->morning_end) {
+                if($leave !== null && $leave < $this->morning_end) {
                     $morning_loss += $leave->diffInMinutes($this->morning_end) * $this->settings->losing_pang;
                 }
                 $morning_loss = ($morning_loss >= $this->settings->absent_loss) ? $this->settings->absent_loss : $morning_loss;
                 $morning_absent = ($morning_loss >= $this->settings->absent_loss) ? true : false;
 
                 // Afternoon
-                if ($leave === null || $leave <= $this->afternoon_start) {
+                if ($leave === null && $this->date->toTimeString() > $this->afternoon_end) {
                     $afternoon_loss += $this->settings->absent_loss;
-                } elseif ($leave < $this->afternoon_leave) {
-                    $afternoon_loss += $leave->diffInMinutes($this->afternoon_leave) * $this->settings->losing_pang;
+                } else {
+                    if( $leave != null) {
+                        if ( $leave <= $this->afternoon_start) {
+                            $afternoon_loss += $this->settings->absent_loss;
+                        } elseif ($leave < $this->afternoon_leave) {
+                            $afternoon_loss += $leave->diffInMinutes($this->afternoon_leave) * $this->settings->losing_pang;
+                        }
+                    }
                 }
                 if ($arrive > $this->afternoon_start) {
                     $afternoon_loss += $arrive->diffInMinutes($this->afternoon_start) * $this->settings->losing_pang;
@@ -118,20 +133,26 @@ class ProcessPangs implements ShouldQueue
                         $afternoon_gain = $leave->diffInMinutes($this->afternoon_end) * $this->settings->earning_pang;
                     }
                 }
+
+                $difference = $morning_gain - $morning_loss + $afternoon_gain - $afternoon_loss;
+
+                // Update difference in days table
+                Day::where("day", $this->date->toDateString())
+                    ->where("student_id", $student->id)
+                    ->update(["difference" => $difference]);
             }
             else {
-                $morning_loss = $this->settings->absent_loss;
-                $afternoon_loss = $this->settings->absent_loss;
-                $morning_absent = true;
-                $afternoon_absent = true;
+                if ($this->date->toTimeString() > $this->afternoon_end) {
+                    $morning_loss = $this->settings->absent_loss;
+                    $afternoon_loss = $this->settings->absent_loss;
+                    $morning_absent = true;
+                    $afternoon_absent = true;
+
+                    Day::where("day", $this->date->toDateString())
+                        ->where("student_id", $student->id)
+                        ->update(["difference" => (-2 * $this->settings->absent_loss) ]);
+                }
             }
-
-            $difference = $morning_loss + $morning_gain - $afternoon_loss + $afternoon_gain;
-
-            // Update difference in days table
-            Day::where("day", $this->date->toDateString())
-                ->where("student_id", $student->id)
-                ->update(["difference" => $difference]);
         }
     }
 }

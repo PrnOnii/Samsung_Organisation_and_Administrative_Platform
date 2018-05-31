@@ -32,7 +32,7 @@
                             <td>{{ $student->pangs }}</td>
                             <td>{{ $student->promo->name }}</td>
                             <td>
-                            @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString())
+                            @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null)
                                 {{ $student->checkIn->arrived_at }}
                             @else
                                 <form method="post" class="checkIn" action="{{ route("checkIn") }}">
@@ -46,7 +46,7 @@
                             @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->leaved_at !== null)
                                 {{ $student->checkIn->leaved_at }}
                             @else
-                                @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString())
+                                @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null)
                                 <form method="post" class="checkOut" action="{{ route("checkOut") }}">
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="id" value="{{ $student->id }}">
