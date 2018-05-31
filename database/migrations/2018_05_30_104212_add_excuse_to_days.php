@@ -1,11 +1,10 @@
 <?php
 
-use App\Settings;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDifferenceToDaysTable extends Migration
+class AddExcuseToDays extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +14,8 @@ class AddDifferenceToDaysTable extends Migration
     public function up()
     {
         Schema::table('days', function (Blueprint $table) {
-            $table->double("difference")->default(0);
+            $table->boolean("excused")->default(false);
+            $table->string("reason")->default("");
         });
     }
 
@@ -27,7 +27,8 @@ class AddDifferenceToDaysTable extends Migration
     public function down()
     {
         Schema::table('days', function (Blueprint $table) {
-            $table->dropColumn("difference");
+            $table->dropColumn("excused");
+            $table->dropColumn("reason");
         });
     }
 }
