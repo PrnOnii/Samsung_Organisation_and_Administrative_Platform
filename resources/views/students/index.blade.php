@@ -15,7 +15,8 @@
                 <table class="table dataTable">
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Pangs</th>
                         <th>Promotion</th>
                         <th>Check-in</th>
@@ -25,7 +26,8 @@
                     <tbody>
                     @foreach($students as $student)
                         <tr>
-                            <td>{{ $student->first_name }} {{ $student->last_name }}</td>
+                            <td>{{ $student->first_name }}</td>
+                            <td>{{ $student->last_name }}</td>
                             <td>{{ $student->pangs }}</td>
                             <td>{{ $student->promo->name }}</td>
                             <td>
@@ -57,7 +59,8 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Name</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
                             <th>Pangs</th>
                             <th>Promotion</th>
                             <th>Check-in</th>
