@@ -33,4 +33,9 @@ class Student extends Model
     {
         return $this->hasOne("Soap\Pang");
     }
+
+    public function day()
+    {
+        return $this->hasMany("App\Day");
+    }
 }

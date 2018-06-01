@@ -2,9 +2,18 @@
 
 namespace Soap\Http\Controllers;
 
+<<<<<<< HEAD
 use Soap\Student;
 use Soap\Promo;
 use Soap\Pang;
+=======
+use App\Jobs\ProcessPangs;
+use App\Student;
+use App\Promo;
+use App\Pang;
+use App\Day;
+use Carbon\Carbon;
+>>>>>>> 874e5eda01459f1b9826063644d2e94bab90af80
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -20,7 +29,21 @@ class StudentController extends Controller
      */
     public function index()
     {
+        ProcessPangs::dispatch();
         $students = Student::all();
+        foreach ($students as $student) {
+            $student->checkIn = Day::orderBy("day", "desc")->where("student_id", $student->id)->first();
+            $total = 1000;
+            foreach($student->day as $day)
+            {
+                $total += $day->difference;
+                if($total > 1000)
+                    $total = 1000;
+                if($total < 0)
+                    $total = 0;
+            }
+            $student->pangs = $total;
+        }
         return view("students.index", compact("students"));
     }
 
@@ -90,9 +113,10 @@ class StudentController extends Controller
      * @param  \Soap\student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(student $student)
+    public function show(int $id)
     {
-        //
+        $student = Student::find($id);
+        return view("students.show", compact("student"));
     }
 
     /**
@@ -127,5 +151,23 @@ class StudentController extends Controller
     public function destroy(student $student)
     {
         //
+    }
+
+    public function checkIn(Request $request) {
+        $date = Carbon::now("Europe/Paris");
+        Day::where("day", $date->toDateString())
+            ->where("student_id", $request->input("id"))
+            ->update(["arrived_at" => $date->toTimeString() ]);
+        ProcessPangs::dispatch();
+        echo $date->toTimeString();
+    }
+
+    public function checkOut(Request $request) {
+        $date = Carbon::now("Europe/Paris");
+        Day::where("day", $date->toDateString())
+            ->where("student_id", $request->input("id"))
+            ->update(["leaved_at" => $date->toTimeString()]);
+        ProcessPangs::dispatch();
+        echo $date->toTimeString();
     }
 }
