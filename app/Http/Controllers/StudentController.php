@@ -28,7 +28,8 @@ class StudentController extends Controller
         foreach ($students as $student) {
             $student->checkIn = Day::orderBy("day", "desc")->where("student_id", $student->id)->first();
             $total = 1000;
-            foreach($student->day as $day)
+            $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
+            foreach($days as $day)
             {
                 $total += $day->difference;
                 if($total > 1000)

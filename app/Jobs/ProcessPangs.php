@@ -136,7 +136,7 @@ class ProcessPangs implements ShouldQueue
                     if ($leave > $this->afternoon_extra) {
                         if ($day->excused || !$afternoon_absent) {
                             $leave = ($leave > $this->afternoon_end) ? $this->afternoon_end : $leave;
-                            $afternoon_gain = $leave->diffInMinutes($this->afternoon_end) * $this->settings->earning_pang;
+                            $afternoon_gain = $leave->diffInMinutes($this->afternoon_extra) * $this->settings->earning_pang;
                         }
                     }
 

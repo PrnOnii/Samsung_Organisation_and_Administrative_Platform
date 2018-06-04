@@ -12,7 +12,7 @@
         <h1 class="mt-3 mb-3">Liste des etudiants</h1>
         <div class="row">
             <div class="col-12">
-                <table class="table dataTable">
+                <table class="table table-striped dataTable">
                     <thead>
                     <tr>
                         <th>First Name</th>
@@ -25,7 +25,13 @@
                     </thead>
                     <tbody>
                     @foreach($students as $student)
-                        <tr>
+                            @if ($student->pangs <= 0)
+                                <tr class="table-danger">
+                            @elseif ($student->pangs <= 100)
+                                <tr class="table-warning">
+                            @else
+                                <tr>
+                            @endif
                             <td>{{ $student->first_name }}</td>
                             <td>{{ $student->last_name }}</td>
                             <td>{{ $student->pangs }}</td>
@@ -33,6 +39,10 @@
                             <td>
                             @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null)
                                 {{ $student->checkIn->arrived_at }}
+                                {{--Feature to be added, like X-Editable--}}
+                                <a type="button" class="btn btn-light btn-sm" href="/editChecks">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                             @else
                                 <form method="post" class="checkIn" action="{{ route("checkIn") }}">
                                     {!! csrf_field() !!}
@@ -44,6 +54,10 @@
                             <td>
                             @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->leaved_at !== null)
                                 {{ $student->checkIn->leaved_at }}
+                                {{--Feature to be added, like X-Editable--}}
+                                <a type="button" class="btn btn-light btn-sm" href="/editChecks">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                             @else
                                 @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null)
                                 <form method="post" class="checkOut" action="{{ route("checkOut") }}">
