@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePangsTable extends Migration
+class CreateEditPangsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreatePangsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pangs', function (Blueprint $table) {
+        Schema::create('edit_pangs', function (Blueprint $table) {
             $table->increments('id');
-            $table->float("total")->default(1000);
             $table->unsignedInteger("student_id");
             $table->foreign("student_id")->references("id")->on("students")->onDelete("cascade");
+            $table->date("day");
+            $table->double("quantity");
+            $table->string("reason");
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreatePangsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pangs');
+        Schema::dropIfExists('edit_pangs');
     }
 }

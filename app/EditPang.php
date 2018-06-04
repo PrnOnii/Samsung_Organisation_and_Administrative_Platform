@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Pang extends Model
+class EditPang extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Pang extends Model
      * @var array
      */
     protected $fillable = [
-        'total', 'student_id'
+        "student_id", "day", "quantity", "reason"
     ];
 
     /**
@@ -23,9 +23,4 @@ class Pang extends Model
     protected $hidden = [
 
     ];
-
-    public function student()
-    {
-        return $this->belongsTo("App\Student");
-    }
 }
