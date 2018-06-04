@@ -77,8 +77,8 @@ class ProcessPangs implements ShouldQueue
                         "student_id" => $student->id,
                         "day" => $this->date->toDateString(),
                         "difference" => 0,
-                    ]);
-                }
+                        ]);
+                    }
                 $arrive = ($day->arrived_at !== null) ? Carbon::createFromFormat("Y-m-d H:i:s", $this->date->toDateString() . " " . $day->arrived_at) : null;
                 $leave = ($day->leaved_at !== null) ? Carbon::createFromFormat("Y-m-d H:i:s", $this->date->toDateString() . " " . $day->leaved_at) : null;
 
