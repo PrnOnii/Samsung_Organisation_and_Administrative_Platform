@@ -72,7 +72,6 @@ class StudentController extends Controller
             "first_name" => $request->input("firstname"),
             "last_name" => $request->input("lastname"),
         ]);
-        $student->pang()->create();
         return redirect("/student");
     }
 
@@ -97,7 +96,6 @@ class StudentController extends Controller
                 "last_name" => $parts[0],
                 "first_name" => $parts[1],
             ]);
-            $student->pang()->create();
         }
         return redirect("/student");
     }
