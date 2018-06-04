@@ -44,13 +44,16 @@ $(".chosen").chosen();
 
 table.$('.clickable').click(function(){
     var input = table.$(this).parent().children().find( "input" ).first();
+    var tr = table.$(this).parent();
     if(input.is(':checked'))
     {
-        input.attr('checked', false)
+        input.attr('checked', false);
+        tr.attr('class', '');
     }
     else
     {
-        input.attr('checked', true)
+        input.attr('checked', true);
+        tr.attr('class', 'table-primary');
     }
 });
 

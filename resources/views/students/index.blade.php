@@ -21,7 +21,7 @@
                         <a class="dropdown-item action" id="justify" href="#">Ajouter une excuse</a>
                     </div>
                 </div>
-                <table class="table table-striped dataTable">
+                <table class="table table-sm table-striped dataTable">
                     <thead>
                     <tr>
                         <th><i class="far fa-check-square"></i></th>
@@ -76,6 +76,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th><i class="far fa-check-square"></i></th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Pangs</th>
