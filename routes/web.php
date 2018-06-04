@@ -34,6 +34,8 @@ Route::get("/justify", "DayController@justify")->name("justify");
 Route::post("/justify", "DayController@storeJustify");
 Route::get("/editChecks", "DayController@editChecks")->name("editChecks");
 Route::post("/editChecks", "DayController@updateChecks");
+Route::get("/editPangs", "DayController@editPangs")->name("editPangs");
+Route::post("/editPangs", "DayController@updatePangs");
 
 
 
@@ -42,7 +44,7 @@ Route::get("/settings/2019", function () {
     \App\PangSettings::create([
         "current_promo_id" => 1,
     ]);
-    return redirect("/student");
+    return redirect("/");
 });
 
 //Route::get("/test", function () {

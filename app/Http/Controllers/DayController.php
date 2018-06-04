@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\EditPang;
 use App\Jobs\ProcessPangs;
 use App\Student;
 use App\Promo;
@@ -123,49 +124,29 @@ class DayController extends Controller
         return redirect("/student");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function show(int $id)
-    {
-        //
+    public function editPangs () {
+        $students = Student::all();
+        return view("day.editPangs", compact("students"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(student $student)
-    {
-        //
-    }
+    public function updatePangs (Request $request) {
+        $request->validate([
+            "students" => "required",
+            "day" => "required",
+            "quantity" => "required",
+            "reason" => "required",
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, student $student)
-    {
-        //
-    }
+        foreach ($request->input("students") as $student_id) {
+            EditPang::create([
+                "student_id" => $student_id,
+                "day" => $request->input("day"),
+                "quantity" => $request->input("quantity"),
+                "reason" => $request->input("reason"),
+            ]);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(student $student)
-    {
-        //
+        return redirect("/");
     }
 
 }
