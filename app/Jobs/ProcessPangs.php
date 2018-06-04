@@ -185,7 +185,14 @@ class ProcessPangs implements ShouldQueue
                         $afternoon_loss = 0;
                     }
 
-                    $difference = $morning_gain - $morning_loss + $afternoon_gain - $afternoon_loss;
+                    $tManual = EditPang::where("student_id", $student->id)->where("day", $this->date->toDateString())->get();
+                    $editQuantity = 0;
+                    foreach ($tManual as $manual){
+                        $editQuantity += $manual->quantity;
+                    }
+
+                    $difference = $morning_gain - $morning_loss + $afternoon_gain - $afternoon_loss + $editQuantity;
+
 
                     Day::where("day", $this->date->toDateString())
                         ->where("student_id", $student->id)

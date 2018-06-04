@@ -86,7 +86,7 @@ class DayController extends Controller
             ProcessPangs::dispatch(Student::find($student_id), $request->input("day"));
         }
 
-        return redirect("/editChecks");
+        return redirect("/");
     }
 
     /**
@@ -119,9 +119,10 @@ class DayController extends Controller
                     "excused" => true,
                     "reason" => $request->input("reason")
                 ]);
+            ProcessPangs::dispatch(Student::find($student_id), $request->input("day"));
         }
 
-        return redirect("/student");
+        return redirect("/");
     }
 
     public function editPangs () {
@@ -144,6 +145,7 @@ class DayController extends Controller
                 "quantity" => $request->input("quantity"),
                 "reason" => $request->input("reason"),
             ]);
+            ProcessPangs::dispatch(Student::find($student_id), $request->input("day"));
         }
 
         return redirect("/");
