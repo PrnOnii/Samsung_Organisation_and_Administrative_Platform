@@ -117,6 +117,7 @@ class StudentController extends Controller
         $student = Student::find($id);
         $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
         $pangsHistory = [];
+        $attendanceHistory = [[], []];
         $total = 1000;
         foreach($days as $day)
         {
@@ -125,9 +126,12 @@ class StudentController extends Controller
                 $total = 1000;
             if($total < 0)
                 $total = 0;
+            $attendanceHistory[0][$day->day] = $day->arrived_at;
+            $attendanceHistory[1][$day->day] = $day->leaved_at;
             $pangsHistory[$day->day] = $total;
         }
         $student->pangsHistory = $pangsHistory;
+        $student->attendanceHistory = $attendanceHistory;
         return view("students.show", compact("student"));
     }
 

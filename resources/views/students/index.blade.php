@@ -37,14 +37,20 @@
                     @foreach($students as $student)
                             @if ($student->pangs <= 0)
                                 <tr class="table-danger">
-                            @elseif ($student->pangs <= 100)
+                            @elseif ($student->pangs <= 300)
                                 <tr class="table-warning">
+                            @elseif ($student->pangs >= 700)
+                                <tr class="table-success">
                             @else
                                 <tr>
                             @endif
                             <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable"><input name="students[]" value="{{ $student->id }}" type="checkbox"></td>
-                            <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable">{{ $student->first_name }}</td>
-                            <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable">{{ $student->last_name }}</td>
+                            <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable">
+                                <a href="/student/{{ $student->id }}"> {{ $student->first_name }}</a>
+                            </td>
+                            <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable">
+                                <a href="/student/{{ $student->id }}"> {{ $student->last_name }}</a>
+                            </td>
                             <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable">{{ $student->pangs }}</td>
                             <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable">{{ $student->promo->name }}</td>
                             <td>
