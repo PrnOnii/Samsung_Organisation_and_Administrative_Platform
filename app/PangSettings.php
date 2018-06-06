@@ -22,7 +22,8 @@ class PangSettings extends Model
         "afternoon_end",
         "earning_pang",
         "losing_pang",
-        "absent_loss"
+        "absent_loss",
+        "current_promo_id",
     ];
 
     /**

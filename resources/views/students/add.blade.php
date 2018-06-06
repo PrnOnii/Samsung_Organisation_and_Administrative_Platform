@@ -9,16 +9,6 @@
                     <form role="form" method="post" action="{{ url('/student/add') }}">
                         {!! csrf_field() !!}
 
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
                         <div class="form-group">
                             <label for="f_name">Prenom</label>
                             <input id="f_name" type="text" class="form-control" name="firstname" required autofocus>
@@ -32,7 +22,7 @@
                         <div class="form-group">
                             <label for="promotion">Promotion</label>
                             <select id="promotion" class="form-control" name="promotion" required>
-                                <option value="0">Choisir une promotion</option>
+                                <option disabled selected hidden>Choisir une promotion</option>
                                 @foreach($promotions as $promotion)
                                     <option value="{{ $promotion->id }}">{{ $promotion->name }}</option>
                                 @endforeach
