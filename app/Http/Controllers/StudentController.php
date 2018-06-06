@@ -116,7 +116,7 @@ class StudentController extends Controller
     {
         $student = Student::find($id);
         $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
-        $pangHistory = [];
+        $pangsHistory = [];
         $total = 1000;
         foreach($days as $day)
         {
@@ -125,9 +125,9 @@ class StudentController extends Controller
                 $total = 1000;
             if($total < 0)
                 $total = 0;
-            $pangHistory[$day->day] = $total;
+            $pangsHistory[$day->day] = $total;
         }
-        $student->pangHistory = $pangHistory;
+        $student->pangsHistory = $pangsHistory;
         return view("students.show", compact("student"));
     }
 
