@@ -9,10 +9,7 @@
 @extends("layouts.app")
 @section("content")
     <div class="container">
-        @foreach($student->day as $day)
-            <p>Arrived at {{ $day->arrived_at }} on the {{ $day->day }}, and leaved at {{ $day->leaved_at }}</p>
-        @endforeach
-        <canvas id="pangsChart" width="400" height="400"></canvas>
+        <canvas class="col-md-8 offset-md-2" id="pangsChart"></canvas>
     </div>
 @endsection
 @section("scripts")
