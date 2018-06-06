@@ -8,7 +8,9 @@
 
 @extends("layouts.app")
 @section("content")
-    @foreach($student->day as $day)
-        <p>Arrived at {{ $day->arrived_at }} on the {{ $day->day }}, and leaved at {{ $day->leaved_at }}</p>
-    @endforeach
+    <div class="container">
+        @foreach($student->day as $day)
+            <p>Arrived at {{ $day->arrived_at }} on the {{ $day->day }}, and leaved at {{ $day->leaved_at }}</p>
+        @endforeach
+    </div>
 @endsection

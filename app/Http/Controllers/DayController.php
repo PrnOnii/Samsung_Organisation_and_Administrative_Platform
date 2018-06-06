@@ -17,30 +17,25 @@ class DayController extends Controller
     {
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     public function checkIn(Request $request) {
         $date = Carbon::now("Europe/Paris");
+
         Day::where("day", $date->toDateString())
             ->where("student_id", $request->input("id"))
             ->update(["arrived_at" => $date->toTimeString() ]);
+
         ProcessPangs::dispatch();
         echo $date->toTimeString();
     }
 
     public function checkOut(Request $request) {
         $date = Carbon::now("Europe/Paris");
+
         Day::where("day", $date->toDateString())
             ->where("student_id", $request->input("id"))
             ->update(["leaved_at" => $date->toTimeString()]);
+
         ProcessPangs::dispatch();
         echo $date->toTimeString();
     }

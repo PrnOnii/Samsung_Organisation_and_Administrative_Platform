@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\ProcessPangs;
 use App\Student;
 use App\Promo;
-use App\Pang;
+use App\PangSettings;
 use App\Day;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,6 +15,10 @@ class StudentController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        if (!PangSettings::first())
+            PangSettings::create([
+                "current_promo_id" => 1,
+            ]);
     }
     /**
      * Display a listing of the resource.
@@ -26,9 +30,10 @@ class StudentController extends Controller
         ProcessPangs::dispatch();
         $students = Student::all();
         foreach ($students as $student) {
-            $student->checkIn = Day::orderBy("day", "desc")->where("student_id", $student->id)->first();
-            $total = 1000;
             $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
+            $lastItem = count($days) - 1;
+            $student->checkIn = $days[$lastItem];
+            $total = 1000;
             foreach($days as $day)
             {
                 $total += $day->difference;
@@ -83,6 +88,7 @@ class StudentController extends Controller
     public function storeBulk(Request $request)
     {
         $request->validate([
+            // regex:/(([a-zA-Z]|-)+(\s){1}([a-zA-Z]|-)+)/m
             "names" => "required",
             "promotion" => "required",
         ]);
@@ -109,6 +115,19 @@ class StudentController extends Controller
     public function show(int $id)
     {
         $student = Student::find($id);
+        $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
+        $pangHistory = [];
+        $total = 1000;
+        foreach($days as $day)
+        {
+            $total += $day->difference;
+            if($total > 1000)
+                $total = 1000;
+            if($total < 0)
+                $total = 0;
+            $pangHistory[$day->day] = $total;
+        }
+        $student->pangHistory = $pangHistory;
         return view("students.show", compact("student"));
     }
 
@@ -136,14 +155,19 @@ class StudentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
+     * @param Student $student
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
-    public function destroy(student $student)
+    public function destroy(student $student, Request $request)
     {
-        //
+        if ($student->delete()) {
+            $request->session()->flash('confirmation-success', "L'élève a bien été supprimé de la base de donnée");
+            return redirect("/");
+        } else {
+            $request->session()->flash('confirmation-danger', "Il y a eu une erreur lors de la suppression du profil selectionné");
+            return redirect("/student/" . $student->id);
+        }
     }
 
     public function checkIn(Request $request) {
