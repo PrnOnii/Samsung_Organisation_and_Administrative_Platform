@@ -31,16 +31,18 @@
                 backgroundColor: 'red',
                 borderColor: 'blue',
                 data: pangs,
-                fill: false,
-            }],
-        },
-        scales: {
-            yAxes: [{
-                ticks: {
-                    min: 0,
-                    max: 1000 
-                }
+                fill: false
             }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        max: 1000
+                    }
+                }]
+            }
         }
     });
 </script>
