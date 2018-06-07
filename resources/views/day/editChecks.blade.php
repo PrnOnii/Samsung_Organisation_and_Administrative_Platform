@@ -17,28 +17,22 @@
                         <form role="form" method="post" action="{{ url('/editChecks') }}">
                             {!! csrf_field() !!}
 
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-
                             <div class="form-group">
                                 <label for="students">Etudiant(s)</label>
-                                <select id="students" class="form-control" name="students[]" required multiple autofocus>
+                                <select id="students" class="form-control chosen" name="students[]" required multiple autofocus>
                                     @foreach($students as $student)
-                                        <option value="{{$student->id}}">{{ $student->first_name }} {{ $student->last_name }}</option>
+                                        @if(isset($_GET['students']) && in_array($student->id, $_GET['students']))
+                                            <option selected value="{{$student->id}}">{{ $student->first_name }} {{ $student->last_name }}</option>
+                                        @else
+                                            <option value="{{$student->id}}">{{ $student->first_name }} {{ $student->last_name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="day">Jour</label>
-                                <input id="day" type="date" class="form-control" name="day" required>
+                                <input id="day" type="date" class="form-control" name="day" value="{{ date('Y-m-d') }}" required>
                             </div>
 
                             <div class="form-group">

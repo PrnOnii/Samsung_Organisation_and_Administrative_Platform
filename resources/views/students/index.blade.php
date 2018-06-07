@@ -5,16 +5,26 @@
  * Date: 5/18/18
  * Time: 7:05 PM
  */ ?>
-
 @extends("layouts.app")
 @section("content")
     <div class="container">
         <h1 class="mt-3 mb-3">Liste des etudiants</h1>
         <div class="row">
             <div class="col-12">
-                <table class="table dataTable">
+                <div class="dropdown mb-3">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sur la selection ...
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item action" id="editChecks" href="#">Editer Check-in / out</a>
+                        <a class="dropdown-item action" id="editPangs" href="#">Ajouter / retirer pangs</a>
+                        <a class="dropdown-item action" id="justify" href="#">Ajouter une excuse</a>
+                    </div>
+                </div>
+                <table class="table table-sm table-striped dataTable">
                     <thead>
                     <tr>
+                        <th><i class="far fa-check-square"></i></th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Pangs</th>
@@ -25,11 +35,27 @@
                     </thead>
                     <tbody>
                     @foreach($students as $student)
-                        <tr>
-                            <td>{{ $student->first_name }}</td>
-                            <td>{{ $student->last_name }}</td>
-                            <td>{{ $student->pangs }}</td>
-                            <td>{{ $student->promo->name }}</td>
+                            <tr>
+                            <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable"><input name="students[]" value="{{ $student->id }}" type="checkbox"></td>
+                            <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable">
+                                <a href="/student/{{ $student->id }}"> {{ ucfirst($student->first_name) }}</a>
+                            </td>
+                            <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable">
+                                <a href="/student/{{ $student->id }}"> {{ ucfirst($student->last_name) }}</a>
+                            </td>
+                            <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable">
+                                <h4>
+                                @if ($student->pangs <= 0)
+                                    <span class="badge badge-danger">
+                                @elseif ($student->pangs <= 300)
+                                    <span class="badge badge-warning">
+                                @elseif ($student->pangs >= 700)
+                                    <span class="badge badge-success">
+                                @endif
+                                {{ $student->pangs }}
+                                </span></h4>
+                            </td>
+                            <td data-toggle="tooltip" title="<img src='https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg' />" class="clickable">{{ $student->promo->name }}</td>
                             <td>
                             @if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null)
                                 {{ $student->checkIn->arrived_at }}
@@ -37,7 +63,7 @@
                                 <form method="post" class="checkIn" action="{{ route("checkIn") }}">
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="id" value="{{ $student->id }}">
-                                    <button type="submit" class="btn btn-success">Check-In</button>
+                                    <button type="submit" class="btn btn-success btn-sm">Check-In</button>
                                 </form>
                             @endif
                             </td>
@@ -49,7 +75,7 @@
                                 <form method="post" class="checkOut" action="{{ route("checkOut") }}">
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="id" value="{{ $student->id }}">
-                                    <button type="submit" class="btn btn-warning">Check-Out</button>
+                                    <button type="submit" class="btn btn-warning btn-sm">Check-Out</button>
                                 </form>
                                 @endif
                             @endif
@@ -59,6 +85,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th><i class="far fa-check-square"></i></th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Pangs</th>

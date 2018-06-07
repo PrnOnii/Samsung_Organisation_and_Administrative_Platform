@@ -29,11 +29,6 @@ class Student extends Model
         return $this->belongsTo("App\Promo");
     }
 
-    public function pang()
-    {
-        return $this->hasOne("App\Pang");
-    }
-
     public function day()
     {
         return $this->hasMany("App\Day");

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\EditPang;
 use App\Jobs\ProcessPangs;
+use App\PangSettings;
 use App\Student;
 use App\Promo;
 use App\Pang;
@@ -16,30 +18,25 @@ class DayController extends Controller
     {
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     public function checkIn(Request $request) {
         $date = Carbon::now("Europe/Paris");
+
         Day::where("day", $date->toDateString())
             ->where("student_id", $request->input("id"))
             ->update(["arrived_at" => $date->toTimeString() ]);
+
         ProcessPangs::dispatch();
         echo $date->toTimeString();
     }
 
     public function checkOut(Request $request) {
         $date = Carbon::now("Europe/Paris");
+
         Day::where("day", $date->toDateString())
             ->where("student_id", $request->input("id"))
             ->update(["leaved_at" => $date->toTimeString()]);
+
         ProcessPangs::dispatch();
         echo $date->toTimeString();
     }
@@ -66,6 +63,7 @@ class DayController extends Controller
             "students" => "required",
             "day" => "required|date",
         ]);
+        ProcessPangs::dispatch(null, $request->input("day"));
 
         foreach ($request->input("students") as $student_id) {
             if ($request->input("arrived_at") !== null) {
@@ -82,10 +80,10 @@ class DayController extends Controller
                         "leaved_at" => $request->input("leaved_at")
                     ]);
             }
-            ProcessPangs::dispatch(Student::find($student_id), $request->input("day"));
         }
+        ProcessPangs::dispatch(null, $request->input("day"));
 
-        return redirect("/editChecks");
+        return redirect("/");
     }
 
     /**
@@ -118,54 +116,57 @@ class DayController extends Controller
                     "excused" => true,
                     "reason" => $request->input("reason")
                 ]);
+            ProcessPangs::dispatch(Student::find($student_id), $request->input("day"));
         }
 
-        return redirect("/student");
+        return redirect("/");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function show(int $id)
-    {
-        //
+    public function editPangs () {
+        $students = Student::all();
+        return view("day.editPangs", compact("students"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(student $student)
-    {
-        //
+    public function updatePangs (Request $request) {
+        $request->validate([
+            "students" => "required",
+            "day" => "required",
+            "quantity" => "required",
+            "reason" => "required",
+        ]);
+
+        foreach ($request->input("students") as $student_id) {
+            EditPang::create([
+                "student_id" => $student_id,
+                "day" => $request->input("day"),
+                "quantity" => $request->input("quantity"),
+                "reason" => $request->input("reason"),
+            ]);
+            ProcessPangs::dispatch(Student::find($student_id), $request->input("day"));
+        }
+
+        return redirect("/");
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, student $student)
-    {
-        //
+    public function editPangSettings () {
+        $ettings = PangSettings::all();
+        return view("day.pangSettings", compact("settings"));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(student $student)
-    {
-        //
+    public function updatePangSettings (Request $request) {
+        $request->validate([
+            "morning_early" => "required",
+            "morning_start" => "required",
+            "morning_late" => "required",
+            "morning_end" => "required",
+            "afternoon_start" => "required",
+            "afternoon_leave" => "required",
+            "afternoon_extra" => "required",
+            "afternoon_end" => "required",
+            "earning_pang" => "required",
+            "losing_pang" => "required",
+            "absent_loss" => "required",
+            "current_promo_id" => "required|integer|gt:0"
+        ]);
     }
-
 }

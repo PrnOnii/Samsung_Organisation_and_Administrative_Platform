@@ -6,6 +6,7 @@ use App\Student;
 use App\PangSettings;
 use App\Day;
 use App\Pang;
+use App\EditPang;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -77,7 +78,7 @@ class ProcessPangs implements ShouldQueue
                         "student_id" => $student->id,
                         "day" => $this->date->toDateString(),
                         "difference" => 0,
-                    ]);
+                        ]);
                 }
                 $arrive = ($day->arrived_at !== null) ? Carbon::createFromFormat("Y-m-d H:i:s", $this->date->toDateString() . " " . $day->arrived_at) : null;
                 $leave = ($day->leaved_at !== null) ? Carbon::createFromFormat("Y-m-d H:i:s", $this->date->toDateString() . " " . $day->leaved_at) : null;
@@ -136,7 +137,7 @@ class ProcessPangs implements ShouldQueue
                     if ($leave > $this->afternoon_extra) {
                         if ($day->excused || !$afternoon_absent) {
                             $leave = ($leave > $this->afternoon_end) ? $this->afternoon_end : $leave;
-                            $afternoon_gain = $leave->diffInMinutes($this->afternoon_end) * $this->settings->earning_pang;
+                            $afternoon_gain = $leave->diffInMinutes($this->afternoon_extra) * $this->settings->earning_pang;
                         }
                     }
 
@@ -145,7 +146,13 @@ class ProcessPangs implements ShouldQueue
                         $afternoon_loss = 0;
                     }
 
-                    $difference = $morning_gain - $morning_loss + $afternoon_gain - $afternoon_loss;
+                    $tManual = EditPang::where("student_id", $student->id)->where("day", $this->date->toDateString())->get();
+                    $editQuantity = 0;
+                    foreach ($tManual as $manual){
+                        $editQuantity += $manual->quantity;
+                    }
+
+                    $difference = $morning_gain - $morning_loss + $afternoon_gain - $afternoon_loss + $editQuantity;
 
                     // Update difference in days table
                     Day::where("day", $this->date->toDateString())
@@ -178,7 +185,14 @@ class ProcessPangs implements ShouldQueue
                         $afternoon_loss = 0;
                     }
 
-                    $difference = $morning_gain - $morning_loss + $afternoon_gain - $afternoon_loss;
+                    $tManual = EditPang::where("student_id", $student->id)->where("day", $this->date->toDateString())->get();
+                    $editQuantity = 0;
+                    foreach ($tManual as $manual){
+                        $editQuantity += $manual->quantity;
+                    }
+
+                    $difference = $morning_gain - $morning_loss + $afternoon_gain - $afternoon_loss + $editQuantity;
+
 
                     Day::where("day", $this->date->toDateString())
                         ->where("student_id", $student->id)

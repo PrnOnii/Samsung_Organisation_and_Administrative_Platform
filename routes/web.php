@@ -16,11 +16,16 @@ Auth::routes();
 
 Route::get("/", "StudentController@index")->name('home');
 Route::get("/student", "StudentController@index")->name('students');
+
+// Students
 Route::get("/student/add", "StudentController@create")->name('addStudent');
 Route::post("/student/add", "StudentController@store");
 Route::get("/student/addBulk", "StudentController@createBulk")->name('addStudentBulk');
 Route::post("/student/addBulk", "StudentController@storeBulk");
 Route::get("/student/{id}", "StudentController@show")->name('showStudent');
+Route::get("/student/{id}/edit", "StudentController@edit")->name("editStudent");
+Route::post("/student/{id}/edit", "StudentController@update");
+Route::delete("/student/{id}", "StudentController@destroy")->name("deleteStudent");
 
 Route::get("/promo/add", "PromoController@create")->name('addPromo');
 Route::post("/promo/add", "PromoController@store");
@@ -34,17 +39,5 @@ Route::get("/justify", "DayController@justify")->name("justify");
 Route::post("/justify", "DayController@storeJustify");
 Route::get("/editChecks", "DayController@editChecks")->name("editChecks");
 Route::post("/editChecks", "DayController@updateChecks");
-
-
-
-Route::get("/settings/2019", function () {
-    if (!\App\PangSettings::first())
-    \App\PangSettings::create([
-        "current_promo_id" => 1,
-    ]);
-    return redirect("/student");
-});
-
-//Route::get("/test", function () {
-
-//});
+Route::get("/editPangs", "DayController@editPangs")->name("editPangs");
+Route::post("/editPangs", "DayController@updatePangs");

@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
@@ -88,7 +89,31 @@
 
         </div>
     </nav>
-
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-md-12">
+                @if (session('confirmation-success'))
+                    <div class="alert alert-success">
+                        {{ session('confirmation-success') }}
+                    </div>
+                @endif
+                @if (session('confirmation-danger'))
+                    <div class="alert alert-danger">
+                        {!! session('confirmation-danger') !!}
+                    </div>
+                @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
     @yield('content')
 </div>
 
@@ -96,7 +121,11 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+<script type="text/javascript"  src="{{ asset('js/chosen.jquery.min.js') }}"></script>
+<script src="{{ asset('js/moment.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script src="{{ asset('js/datatableSearch.js') }}"></script>
 <script src="{{ asset('js/ajaxCheckIn.js') }}"></script>
+@yield('scripts')
 </body>
 </html>
