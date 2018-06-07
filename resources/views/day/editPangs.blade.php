@@ -11,7 +11,7 @@
     <div class="container">
         <h1 class="mt-3 mb-3">Ajouter / Retirer des pangs</h1>
         <div class="row">
-            <div class="col-8 offset-2">
+            <div class="col-md-8 offset-md-2">
                 <div class="card">
                     <div class="card-body">
                         <form role="form" method="post" action="{{ url('/editPangs') }}">
