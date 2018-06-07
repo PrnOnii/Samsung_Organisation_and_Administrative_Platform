@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EditPang;
 use App\Jobs\ProcessPangs;
+use App\PangSettings;
 use App\Student;
 use App\Promo;
 use App\Pang;
@@ -62,6 +63,7 @@ class DayController extends Controller
             "students" => "required",
             "day" => "required|date",
         ]);
+        ProcessPangs::dispatch(null, $request->input("day"));
 
         foreach ($request->input("students") as $student_id) {
             if ($request->input("arrived_at") !== null) {
@@ -78,8 +80,8 @@ class DayController extends Controller
                         "leaved_at" => $request->input("leaved_at")
                     ]);
             }
-            ProcessPangs::dispatch(Student::find($student_id), $request->input("day"));
         }
+        ProcessPangs::dispatch(null, $request->input("day"));
 
         return redirect("/");
     }
@@ -146,4 +148,25 @@ class DayController extends Controller
         return redirect("/");
     }
 
+    public function editPangSettings () {
+        $ettings = PangSettings::all();
+        return view("day.pangSettings", compact("settings"));
+    }
+
+    public function updatePangSettings (Request $request) {
+        $request->validate([
+            "morning_early" => "required",
+            "morning_start" => "required",
+            "morning_late" => "required",
+            "morning_end" => "required",
+            "afternoon_start" => "required",
+            "afternoon_leave" => "required",
+            "afternoon_extra" => "required",
+            "afternoon_end" => "required",
+            "earning_pang" => "required",
+            "losing_pang" => "required",
+            "absent_loss" => "required",
+            "current_promo_id" => "required|integer|gt:0"
+        ]);
+    }
 }
