@@ -76,13 +76,13 @@
             datasets: [{
                 label: "CheckIns",
                 backgroundColor: "white",
-                borderColor: "yellow",
+                borderColor: "green",
                 data: checkIn,
                 fill: true
             }, {
                 label: "checkOut",
-                backgroundColor: "yellow",
-                borderColor: "yellow",
+                backgroundColor: "green",
+                borderColor: "green",
                 data: checkOut,
                 fill: true
             }]
