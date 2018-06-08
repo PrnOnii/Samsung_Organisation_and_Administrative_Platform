@@ -38,10 +38,10 @@
                                         <span class="badge badge-danger">
                                     @elseif ($student->pangs <= 300)
                                         <span class="badge badge-warning">
-                                    @elseif ($student->pangs >= 700)
-                                        <span class="badge badge-success">
+                                    @elseif ($student->pangs <= 700)
+                                        <span class="badge badge-info">
                                     @else
-                                        <span class="badge">
+                                        <span class="badge badge-success">
                                     @endif
                                             {{ $student->pangs }}
                                         </span>
