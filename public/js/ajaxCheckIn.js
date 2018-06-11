@@ -56,9 +56,3 @@ $( document ).on('click', '.clickable', function(){
         tr.attr('class', 'table-primary');
     }
 });
-
-table.$('td[data-toggle="tooltip"]').tooltip({
-    animated: 'fade',
-    placement: 'bottom',
-    html: true
-});

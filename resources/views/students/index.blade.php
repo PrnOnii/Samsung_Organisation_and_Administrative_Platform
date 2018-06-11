@@ -83,7 +83,6 @@
         {
             $("#alert-refresh").hide();
             table.ajax.reload();
-            $('[data-toggle="tooltip"]').tooltip();
         }
         else
         {
