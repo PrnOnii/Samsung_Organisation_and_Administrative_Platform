@@ -47,6 +47,73 @@ class StudentController extends Controller
         return view("students.index", compact("students"));
     }
 
+    public function jsonStudentsData()
+    {
+        $data = [];
+        ProcessPangs::dispatch();
+        $students = Student::all();
+        foreach ($students as $student) {
+            $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
+            $lastItem = count($days) - 1;
+            $student->checkIn = $days[$lastItem];
+            $total = 1000;
+            foreach($days as $day)
+            {
+                $total += $day->difference;
+                if($total > 1000)
+                    $total = 1000;
+                if($total < 0)
+                    $total = 0;
+            }
+            
+            if($total <= 0)
+                $student->pangs = '<h4><span class="badge badge-danger">' . $total . '</span></h4>';
+            else if ($total <= 300)
+                $student->pangs = '<h4><span class="badge badge-warning">' . $total . '</span></h4>';
+            else if ($total <= 700)
+                $student->pangs = '<h4><span class="badge badge-info">' . $total . '</span></h4>';
+            else
+                $student->pangs = '<h4><span class="badge badge-success">' . $total . '</span></h4>';
+
+            $checkBox = '<input name="students[]" value="'.$student->id.'" type="checkbox">';
+
+            $student->first_name = '<a href="/student/'. $student->id .'"  >' . ucfirst($student->first_name) . '</a>';
+            $student->last_name = '<a href="/student/'. $student->id .'">' . ucfirst($student->last_name) . '</a>';
+
+            if(is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null)
+                $checkIn = $student->checkIn->arrived_at;
+            else
+            {
+                $checkIn = '<form method="post" class="checkIn" action="'. route("checkIn") .'">
+                '.csrf_field() .'
+                <input type="hidden" name="id" value="'. $student->id .'">
+                <button type="submit" class="btn btn-success btn-sm">Check-In</button>
+                </form>';
+            }
+
+            if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->leaved_at !== null)
+                $checkOut = $student->checkIn->leaved_at;
+            else
+            {
+                if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null)
+                {
+                    $checkOut = '<form method="post" class="checkOut" action="'. route("checkOut") .'">
+                    '.csrf_field() .'
+                    <input type="hidden" name="id" value="'. $student->id .'">
+                    <button type="submit" class="btn btn-warning btn-sm">Check-Out</button>
+                    </form>';
+                }
+                else
+                {
+                    $checkOut = '';
+                }
+            }
+            array_push($data, [$checkBox, $student->first_name, $student->last_name, $student->pangs, $student->promo->name, $checkIn, $checkOut]);
+        }
+        $json = ['data' => $data];
+        echo json_encode($json);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

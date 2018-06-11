@@ -124,7 +124,6 @@
 <script type="text/javascript"  src="{{ asset('js/chosen.jquery.min.js') }}"></script>
 <script src="{{ asset('js/moment.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
-<script src="{{ asset('js/datatableSearch.js') }}"></script>
 <script src="{{ asset('js/ajaxCheckIn.js') }}"></script>
 @yield('scripts')
 </body>
