@@ -14,21 +14,23 @@
                 <div style="display: none" id="alert-refresh" class="alert alert-info" role="alert">
                     Le rafraichissement automatique est desactive lorsque des etudiants sont selectionnes.
                 </div>
-                <div class="dropdown mb-3">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Sur la selection ...
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item action" id="editChecks" href="#">Editer Check-in / out</a>
-                        <a class="dropdown-item action" id="editPangs" href="#">Ajouter / retirer pangs</a>
-                        <a class="dropdown-item action" id="justify" href="#">Ajouter une excuse</a>
+                <div class="row sticker">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Sur la selection ...
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item action" id="editChecks" href="#">Editer Check-in / out</a>
+                            <a class="dropdown-item action" id="editPangs" href="#">Ajouter / retirer pangs</a>
+                            <a class="dropdown-item action" id="justify" href="#">Ajouter une excuse</a>
+                        </div>
                     </div>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive mt-3">
                     <table id="ajaxStudents" class="table table-sm table-striped dataTable">
                         <thead>
                         <tr>
-                            <th><i class="far fa-check-square"></i></th>
+                            <th><input type="checkbox" id="checkAll"></th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Pangs</th>
@@ -58,6 +60,10 @@
 @endsection
 @section('scripts')
 <script>
+    $(".sticker").sticky({topSpacing:20, zIndex: 99});
+    $("#checkAll").click(function (){
+        $('input:checkbox').prop('checked', this.checked);
+    });
     var table = $('#ajaxStudents').DataTable({
         ajax: "/json",
         "pageLength": 50,
@@ -90,5 +96,6 @@
         }
     }
     setInterval(ajaxRefresh, 5000);
+
 </script>
 @endsection
