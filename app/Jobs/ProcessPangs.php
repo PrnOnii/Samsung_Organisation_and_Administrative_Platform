@@ -128,7 +128,7 @@ class ProcessPangs implements ShouldQueue
                     // Morning
                     if($arrive < $this->morning_start) {
                         if ($day->excused || !$morning_absent) {
-                            $arrive = ($arrive < $this->morning_early) ? $this->settings->morning_early : $arrive;
+                            $arrive = ($arrive < $this->morning_early) ? $this->morning_early : $arrive;
                             $morning_gain = $arrive->diffInMinutes($this->morning_start) * $this->settings->earning_pang;
                         }
                     }
