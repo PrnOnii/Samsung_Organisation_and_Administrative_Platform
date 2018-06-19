@@ -20,9 +20,9 @@
                             Sur la selection ...
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item action" id="editChecks" href="#">Editer Check-in / out</a>
-                            <a class="dropdown-item action" id="editPangs" href="#">Ajouter / retirer pangs</a>
-                            <a class="dropdown-item action" id="justify" href="#">Ajouter une excuse</a>
+                            <a class="dropdown-item action" id="editChecks" href="#"><i class="pr-2 fas fa-user-clock"></i> Editer Check-in / out</a>
+                            <a class="dropdown-item action" id="editPangs" href="#"><i class="pr-2 far fa-chart-bar"></i> Ajouter / retirer pangs</a>
+                            <a class="dropdown-item action" id="justify" href="#"><i class="pr-2 fas fa-file-medical"></i> Ajouter une excuse</a>
                         </div>
                     </div>
                 </div>
