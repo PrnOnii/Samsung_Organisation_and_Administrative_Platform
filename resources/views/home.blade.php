@@ -83,3 +83,13 @@
         </div>
     </div>
 @endsection
+@section('scripts')
+<script>
+    var table = $('.dataTable').DataTable({
+        "pageLength": 50,
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+        }
+    });
+</script>
+@endsection

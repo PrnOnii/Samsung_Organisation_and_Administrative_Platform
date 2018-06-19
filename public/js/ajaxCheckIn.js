@@ -42,7 +42,7 @@ $(".action").click(function(e) {
 $(".chosen").chosen();
 
 
-table.$('.clickable').click(function(){
+$( document ).on('click', '.clickable', function(){
     var input = table.$(this).parent().children().find( "input" ).first();
     var tr = table.$(this).parent();
     if(input.is(':checked'))
@@ -55,10 +55,4 @@ table.$('.clickable').click(function(){
         input.attr('checked', true);
         tr.attr('class', 'table-primary');
     }
-});
-
-table.$('td[data-toggle="tooltip"]').tooltip({
-    animated: 'fade',
-    placement: 'bottom',
-    html: true
 });

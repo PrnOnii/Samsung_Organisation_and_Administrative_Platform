@@ -41,3 +41,4 @@ Route::get("/editChecks", "DayController@editChecks")->name("editChecks");
 Route::post("/editChecks", "DayController@updateChecks");
 Route::get("/editPangs", "DayController@editPangs")->name("editPangs");
 Route::post("/editPangs", "DayController@updatePangs");
+Route::get("/json", "StudentController@jsonStudentsData");
