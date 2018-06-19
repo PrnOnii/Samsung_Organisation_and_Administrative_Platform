@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\EditPang;
 use App\Jobs\ProcessPangs;
+use App\Log;
 use App\Student;
 use App\Promo;
 use App\PangSettings;
 use App\Day;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -77,8 +80,8 @@ class StudentController extends Controller
 
             $checkBox = '<input name="students[]" value="'.$student->id.'" type="checkbox">';
 
-            $student->first_name = '<a href="/student/'. $student->id .'"  >' . ucfirst($student->first_name) . '</a>';
-            $student->last_name = '<a href="/student/'. $student->id .'">' . ucfirst($student->last_name) . '</a>';
+            $student->first_name_data = '<a href="/student/'. $student->first_name . '.' . $student->last_name .'">' . ucfirst($student->first_name) . '</a>';
+            $student->last_name_data = '<a href="/student/'. $student->first_name . '.' . $student->last_name .'">' . ucfirst($student->last_name) . '</a>';
 
             if(is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null)
                 $checkIn = $student->checkIn->arrived_at;
@@ -108,7 +111,7 @@ class StudentController extends Controller
                     $checkOut = '';
                 }
             }
-            array_push($data, [$checkBox, $student->first_name, $student->last_name, $student->pangs, $student->promo->name, $checkIn, $checkOut]);
+            array_push($data, [$checkBox, $student->first_name_data, $student->last_name_data, $student->pangs, $student->promo->name, $checkIn, $checkOut]);
         }
         $json = ['data' => $data];
         echo json_encode($json);
@@ -179,12 +182,15 @@ class StudentController extends Controller
      * @param  \App\student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(string $login)
     {
-        $student = Student::find($id);
+        $name = explode(".", $login);
+        $student = Student::where("first_name", $name[0])->where("last_name", $name[1])->first();
         $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
         $pangsHistory = [];
         $attendanceHistory = [[], []];
+        $pangs = [];
+        $settings = PangSettings::first();
         $total = 1000;
         foreach($days as $day)
         {
@@ -196,10 +202,40 @@ class StudentController extends Controller
             $attendanceHistory[0][$day->day] = $day->arrived_at;
             $attendanceHistory[1][$day->day] = $day->leaved_at;
             $pangsHistory[$day->day] = $total;
+            $entry = [];
+            if($day->difference != 0) {
+                $entry[0] = $day->day;
+                if($editPang = EditPang::where("day", $day->day)->where("student_id", $student->id)->get()) {
+                    foreach ($editPang as $edit) {
+                        $entry[0] = $day->day;
+                        $entry[1] = $edit->quantity;
+                        $entry[3] = $edit->reason;
+                        array_push($pangs, $entry);
+                        $entry = [];
+                        $day->difference -= $edit->quantity;
+                    }
+                }
+                if($day->difference > 0) {
+                    $entry[0] = $day->day;
+                    $entry[1] = $day->difference;
+                    $entry[3] = "Temps de présence avant ". $settings->morning_start ." et / ou après ". $settings->afternoon_extra;
+                    array_push($pangs, $entry);
+                } elseif ($day->difference < 0) {
+                    $entry[0] = $day->day;
+                    $entry[1] = $day->difference;
+                    if($day->difference > (-1 * $settings->absent_loss)) {
+                        $entry[3] = "Retard";
+                    } else {
+                        $entry[3] = "Absence a une (demi-)journée";
+                    }
+                    array_push($pangs, $entry);
+                }
+            }
         }
+        $student->pangs = $pangs;
         $student->pangsHistory = $pangsHistory;
         $student->attendanceHistory = $attendanceHistory;
-        return view("students.show", compact("student"));
+        return view("students.show", compact("student", "days"));
     }
 
     /**

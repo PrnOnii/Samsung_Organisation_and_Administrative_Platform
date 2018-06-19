@@ -1,8 +1,8 @@
 ameliorer la page etudiant
 implementer l'API microsoft
 faire un mailing a chaque fois qu'une personne passe en dessous des 300 pangs, ou absence (demi-journee)
-Ajouter coor vert pour au dessus de 700
-Traquer quel utilisateur fait quoi
+Ajouter color vert pour au dessus de 700
+Traquer quel utilisateur fait quoi (Logs)
 Onglet colles, avec username
 Graphique bloc de presence
 Agenda intervention

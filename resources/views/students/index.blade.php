@@ -8,7 +8,7 @@
 @extends("layouts.app")
 @section("content")
     <div class="container">
-        <h1 class="mt-3 mb-3">Liste des etudiants</h1>
+        <h1 class="my-3">Liste des etudiants</h1>
         <div class="row">
             <div class="col-12">
                 <div style="display: none" id="alert-refresh" class="alert alert-info" role="alert">
@@ -59,7 +59,9 @@
     </div>
 @endsection
 @section('scripts')
-<script>
+    <script src="{{ asset('js/ajaxCheckIn.js') }}"></script>
+    <script>
+
     $(".sticker").sticky({topSpacing:20, zIndex: 99});
     $("#checkAll").click(function (){
         $('input:checkbox').prop('checked', this.checked);
