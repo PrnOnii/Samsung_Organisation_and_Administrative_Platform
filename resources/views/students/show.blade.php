@@ -10,10 +10,7 @@
 @section("content")
     <div class="container">
         <h1 class="my-3">Profil de {{ $student->first_name }} {{ $student->last_name }}</h1>
-            <canvas class="col-md-8 offset-md-2" id="pangsChart"></canvas>
-        <canvas class="col-md-8 offset-md-2" id="attendanceChart"></canvas>
-
-
+        <h2 class="mb-3">{{ $student->total }} pangs</h2>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="checks-tab" data-toggle="tab" href="#checks" role="tab" aria-controls="checks" aria-selected="true">Check-in / out</a>
@@ -25,8 +22,8 @@
                 <a class="nav-link" id="excuses-tab" data-toggle="tab" href="#excuses" role="tab" aria-controls="excuses" aria-selected="false">Excuses</a>
             </li>
         </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="checks" role="tabpanel" aria-labelledby="checks-tab">
+        <div class="tab-content mb-5" id="myTabContent">
+            <div class="tab-pane fade show active pt-3" id="checks" role="tabpanel" aria-labelledby="checks-tab">
                 <table class="table table-sm table-striped dataTable">
                     <thead>
                         <tr>
@@ -53,7 +50,7 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="tab-pane fade" id="pangs" role="tabpanel" aria-labelledby="pangs-tab">
+            <div class="tab-pane fade pt-3" id="pangs" role="tabpanel" aria-labelledby="pangs-tab">
                 <table class="table table-sm table-striped dataTable">
                     <thead>
                         <tr>
@@ -63,13 +60,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($student->pangs as $pang)
+                        @foreach ($student->pangs as $pang)
                         <tr>
                             <td>{{ $pang[0] }}</td>
                             <td>{{ $pang[1] }}</td>
                             <td>{{ $pang[3] }}</td>
                         </tr>
-                    @endforeach
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
@@ -80,48 +77,50 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="tab-pane fade" id="excuses" role="tabpanel" aria-labelledby="excuses-tab">
+            <div class="tab-pane fade pt-3" id="excuses" role="tabpanel" aria-labelledby="excuses-tab">
                 <table class="table table-sm table-striped dataTable">
                     <thead>
-                    <tr>
-                        <th>Jour</th>
-                        <th>Raison</th>
-                    </tr>
+                        <tr>
+                            <th>Jour</th>
+                            <th>Raison</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    @foreach ($days as $day)
+                        @foreach ($days as $day)
                         @if($day->excused)
                         <tr>
                             <td>{{ $day->day }}</td>
                             <td>{{ $day->reason }}</td>
                         </tr>
                         @endif
-                    @endforeach
+                        @endforeach
                     </tbody>
                     <tfoot>
-                    <tr>
-                        <th>Jour</th>
-                        <th>Raison</th>
-                    </tr>
+                        <tr>
+                            <th>Jour</th>
+                            <th>Raison</th>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
+        <canvas class="col-md-8 offset-md-2" id="pangsChart"></canvas>
+        <canvas class="col-md-8 offset-md-2" id="attendanceChart"></canvas>
     </div>
-@endsection
-@section("scripts")
-<script defer>
-    $('.dataTable').DataTable({
-        "pageLength": 10,
-        "language": {
-            "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-        }
-    });
-    // Charts Pangs
-    var ctx = $("#pangsChart");
-    var days = [];
-    var pangs = [];
-    @foreach($student->pangsHistory as $day => $pangs)
+    @endsection
+    @section("scripts")
+    <script defer>
+        $('.dataTable').DataTable({
+            "pageLength": 10,
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+            }
+        });
+        // Charts Pangs
+        var ctx = $("#pangsChart");
+        var days = [];
+        var pangs = [];
+        @foreach($student->pangsHistory as $day => $pangs)
     days.push("{{ $day }}");
     pangs.push("{{ $pangs }}");
     @endforeach

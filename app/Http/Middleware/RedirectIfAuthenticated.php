@@ -23,7 +23,7 @@ class RedirectIfAuthenticated
             if(Auth::user()->admin === 1)
                 return redirect('/student/');
             else
-                return redirect('/student/' . $student->id);
+                return redirect('/student/' . $student->first_name . '.' .  $student->last_name);
         }
 
         return $next($request);

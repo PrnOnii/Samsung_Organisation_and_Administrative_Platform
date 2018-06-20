@@ -63,6 +63,9 @@
                             </a>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/logs')}} "><i class="fas fa-history"></i> Logs</a>
+                    </li>
                     @endif
                     @if (Auth::guest())
                         <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Connexion</a></li>
