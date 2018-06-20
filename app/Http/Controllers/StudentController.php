@@ -191,6 +191,8 @@ class StudentController extends Controller
     {
         $name = explode(".", $login);
         $student = Student::where("first_name", $name[0])->where("last_name", $name[1])->first();
+        if(!$student)
+            return redirect('/');
         if (Auth::user()->admin === 1 || Auth::user()->email === $student->email) {
             $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
             $pangsHistory = [];
