@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Day;
 use App\EditPang;
 use App\Jobs\ProcessPangs;
-use App\Log;
-use App\Student;
-use App\Promo;
 use App\PangSettings;
-use App\Day;
+use App\Promo;
+use App\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,10 +17,13 @@ class StudentController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        if (!PangSettings::first())
+        $this->middleware('admin')->except('show');
+        if (!PangSettings::first()) {
             PangSettings::create([
                 "current_promo_id" => 1,
             ]);
+        }
+
     }
     /**
      * Display a listing of the resource.
@@ -37,13 +39,16 @@ class StudentController extends Controller
             $lastItem = count($days) - 1;
             $student->checkIn = $days[$lastItem];
             $total = 1000;
-            foreach($days as $day)
-            {
+            foreach ($days as $day) {
                 $total += $day->difference;
-                if($total > 1000)
+                if ($total > 1000) {
                     $total = 1000;
-                if($total < 0)
+                }
+
+                if ($total < 0) {
                     $total = 0;
+                }
+
             }
             $student->pangs = $total;
         }
@@ -60,54 +65,53 @@ class StudentController extends Controller
             $lastItem = count($days) - 1;
             $student->checkIn = $days[$lastItem];
             $total = 1000;
-            foreach($days as $day)
-            {
+            foreach ($days as $day) {
                 $total += $day->difference;
-                if($total > 1000)
+                if ($total > 1000) {
                     $total = 1000;
-                if($total < 0)
+                }
+
+                if ($total < 0) {
                     $total = 0;
+                }
+
             }
-            
-            if($total <= 0)
+
+            if ($total <= 0) {
                 $student->pangs = '<h4><span class="badge badge-danger">' . $total . '</span></h4>';
-            else if ($total <= 300)
+            } else if ($total <= 300) {
                 $student->pangs = '<h4><span class="badge badge-warning">' . $total . '</span></h4>';
-            else if ($total <= 700)
+            } else if ($total <= 700) {
                 $student->pangs = '<h4><span class="badge badge-info">' . $total . '</span></h4>';
-            else
+            } else {
                 $student->pangs = '<h4><span class="badge badge-success">' . $total . '</span></h4>';
+            }
 
-            $checkBox = '<input name="students[]" value="'.$student->id.'" type="checkbox">';
+            $checkBox = '<input name="students[]" value="' . $student->id . '" type="checkbox">';
 
-            $student->first_name_data = '<a href="/student/'. $student->first_name . '.' . $student->last_name .'">' . ucfirst($student->first_name) . '</a>';
-            $student->last_name_data = '<a href="/student/'. $student->first_name . '.' . $student->last_name .'">' . ucfirst($student->last_name) . '</a>';
+            $student->first_name_data = '<a href="/student/' . $student->first_name . '.' . $student->last_name . '">' . ucfirst($student->first_name) . '</a>';
+            $student->last_name_data = '<a href="/student/' . $student->first_name . '.' . $student->last_name . '">' . ucfirst($student->last_name) . '</a>';
 
-            if(is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null)
+            if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null) {
                 $checkIn = $student->checkIn->arrived_at;
-            else
-            {
-                $checkIn = '<form method="post" class="checkIn" action="'. route("checkIn") .'">
-                '.csrf_field() .'
-                <input type="hidden" name="id" value="'. $student->id .'">
+            } else {
+                $checkIn = '<form method="post" class="checkIn" action="' . route("checkIn") . '">
+                ' . csrf_field() . '
+                <input type="hidden" name="id" value="' . $student->id . '">
                 <button type="submit" class="btn btn-success btn-sm">Check-In</button>
                 </form>';
             }
 
-            if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->leaved_at !== null)
+            if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->leaved_at !== null) {
                 $checkOut = $student->checkIn->leaved_at;
-            else
-            {
-                if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null)
-                {
-                    $checkOut = '<form method="post" class="checkOut" action="'. route("checkOut") .'">
-                    '.csrf_field() .'
-                    <input type="hidden" name="id" value="'. $student->id .'">
+            } else {
+                if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null) {
+                    $checkOut = '<form method="post" class="checkOut" action="' . route("checkOut") . '">
+                    ' . csrf_field() . '
+                    <input type="hidden" name="id" value="' . $student->id . '">
                     <button type="submit" class="btn btn-warning btn-sm">Check-Out</button>
                     </form>';
-                }
-                else
-                {
+                } else {
                     $checkOut = '';
                 }
             }
@@ -150,7 +154,8 @@ class StudentController extends Controller
         return redirect("/student");
     }
 
-    public function createBulk() {
+    public function createBulk()
+    {
         $promotions = Promo::all();
         return view("students.addBulk", compact("promotions"));
     }
@@ -186,56 +191,66 @@ class StudentController extends Controller
     {
         $name = explode(".", $login);
         $student = Student::where("first_name", $name[0])->where("last_name", $name[1])->first();
-        $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
-        $pangsHistory = [];
-        $attendanceHistory = [[], []];
-        $pangs = [];
-        $settings = PangSettings::first();
-        $total = 1000;
-        foreach($days as $day)
-        {
-            $total += $day->difference;
-            if($total > 1000)
-                $total = 1000;
-            if($total < 0)
-                $total = 0;
-            $attendanceHistory[0][$day->day] = $day->arrived_at;
-            $attendanceHistory[1][$day->day] = $day->leaved_at;
-            $pangsHistory[$day->day] = $total;
-            $entry = [];
-            if($day->difference != 0) {
-                $entry[0] = $day->day;
-                if($editPang = EditPang::where("day", $day->day)->where("student_id", $student->id)->get()) {
-                    foreach ($editPang as $edit) {
-                        $entry[0] = $day->day;
-                        $entry[1] = $edit->quantity;
-                        $entry[3] = $edit->reason;
-                        array_push($pangs, $entry);
-                        $entry = [];
-                        $day->difference -= $edit->quantity;
-                    }
+        if (Auth::user()->admin === 1 || Auth::user()->email === $student->email) {
+            $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
+            $pangsHistory = [];
+            $attendanceHistory = [[], []];
+            $pangs = [];
+            $settings = PangSettings::first();
+            $total = 1000;
+            foreach ($days as $day) {
+                $total += $day->difference;
+                if ($total > 1000) {
+                    $total = 1000;
                 }
-                if($day->difference > 0) {
+
+                if ($total < 0) {
+                    $total = 0;
+                }
+
+                $attendanceHistory[0][$day->day] = $day->arrived_at;
+                $attendanceHistory[1][$day->day] = $day->leaved_at;
+                $pangsHistory[$day->day] = $total;
+                $student->total = $total;
+                $entry = [];
+                if ($day->difference != 0) {
                     $entry[0] = $day->day;
-                    $entry[1] = $day->difference;
-                    $entry[3] = "Temps de présence avant ". $settings->morning_start ." et / ou après ". $settings->afternoon_extra;
-                    array_push($pangs, $entry);
-                } elseif ($day->difference < 0) {
-                    $entry[0] = $day->day;
-                    $entry[1] = $day->difference;
-                    if($day->difference > (-1 * $settings->absent_loss)) {
-                        $entry[3] = "Retard";
-                    } else {
-                        $entry[3] = "Absence a une (demi-)journée";
+                    if ($editPang = EditPang::where("day", $day->day)->where("student_id", $student->id)->get()) {
+                        foreach ($editPang as $edit) {
+                            $entry[0] = $day->day;
+                            $entry[1] = $edit->quantity;
+                            $entry[3] = $edit->reason;
+                            array_push($pangs, $entry);
+                            $entry = [];
+                            $day->difference -= $edit->quantity;
+                        }
                     }
-                    array_push($pangs, $entry);
+                    if ($day->difference > 0) {
+                        $entry[0] = $day->day;
+                        $entry[1] = $day->difference;
+                        $entry[3] = "Temps de présence avant " . $settings->morning_start . " et / ou après " . $settings->afternoon_extra;
+                        array_push($pangs, $entry);
+                    } elseif ($day->difference < 0) {
+                        $entry[0] = $day->day;
+                        $entry[1] = $day->difference;
+                        if ($day->difference > (-1 * $settings->absent_loss)) {
+                            $entry[3] = "Retard";
+                        } else {
+                            $entry[3] = "Absence a une (demi-)journée";
+                        }
+                        array_push($pangs, $entry);
+                    }
                 }
             }
+            $student->pangs = $pangs;
+            $student->pangsHistory = $pangsHistory;
+            $student->attendanceHistory = $attendanceHistory;
+            return view("students.show", compact("student", "days"));
         }
-        $student->pangs = $pangs;
-        $student->pangsHistory = $pangsHistory;
-        $student->attendanceHistory = $attendanceHistory;
-        return view("students.show", compact("student", "days"));
+        else
+        {
+            return redirect('/');
+        }
     }
 
     /**
@@ -277,16 +292,18 @@ class StudentController extends Controller
         }
     }
 
-    public function checkIn(Request $request) {
+    public function checkIn(Request $request)
+    {
         $date = Carbon::now("Europe/Paris");
         Day::where("day", $date->toDateString())
             ->where("student_id", $request->input("id"))
-            ->update(["arrived_at" => $date->toTimeString() ]);
+            ->update(["arrived_at" => $date->toTimeString()]);
         ProcessPangs::dispatch();
         echo $date->toTimeString();
     }
 
-    public function checkOut(Request $request) {
+    public function checkOut(Request $request)
+    {
         $date = Carbon::now("Europe/Paris");
         Day::where("day", $date->toDateString())
             ->where("student_id", $request->input("id"))

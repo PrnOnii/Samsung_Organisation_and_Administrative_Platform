@@ -13,7 +13,12 @@
 
 Auth::routes();
 
-Route::get("/", "HomeController@index");
+Route::get('login/live', 'Auth\LoginController@redirectToProvider');
+Route::get('/authorize', 'Auth\LoginController@handleProviderCallback');
+
+Route::get('/notallowed', 'HomeController@notAllowed')->name('notAllowed');
+
+Route::get("/", "Auth\LoginController@showLoginForm");
 Route::get("/home", "HomeController@index")->name('home');
 Route::get("/student", "StudentController@index")->name('students');
 
