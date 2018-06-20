@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Day extends Model
+class Log extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Day extends Model
      * @var array
      */
     protected $fillable = [
-        "student_id", "day", "arrived_at", "leaved_at",
+        'user_id', 'category_id', 'action'
     ];
 
     /**
@@ -24,8 +24,11 @@ class Day extends Model
 
     ];
 
-    public function student()
-    {
-        return $this->belongsTo("App\Student");
+    public function user() {
+        return $this->belongsTo("App\User", "user_id");
+    }
+
+    public function logCategory() {
+        return $this->belongsTo("App\LogCategory", "category_id");
     }
 }

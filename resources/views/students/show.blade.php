@@ -9,14 +9,114 @@
 @extends("layouts.app")
 @section("content")
     <div class="container">
-        <canvas class="col-md-8 offset-md-2" id="pangsChart"></canvas>
-    </div>
-    <div class="container">
+        <h1 class="my-3">Profil de {{ $student->first_name }} {{ $student->last_name }}</h1>
+            <canvas class="col-md-8 offset-md-2" id="pangsChart"></canvas>
         <canvas class="col-md-8 offset-md-2" id="attendanceChart"></canvas>
+
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="checks-tab" data-toggle="tab" href="#checks" role="tab" aria-controls="checks" aria-selected="true">Check-in / out</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pangs-tab" data-toggle="tab" href="#pangs" role="tab" aria-controls="pangs" aria-selected="false">Pangs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="excuses-tab" data-toggle="tab" href="#excuses" role="tab" aria-controls="excuses" aria-selected="false">Excuses</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="checks" role="tabpanel" aria-labelledby="checks-tab">
+                <table class="table table-sm table-striped dataTable">
+                    <thead>
+                        <tr>
+                            <th>Jour</th>
+                            <th>Arrivée</th>
+                            <th>Départ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($days as $day)
+                        <tr>
+                            <td>{{ $day->day }}</td>
+                            <td>{{ $day->arrived_at }}</td>
+                            <td>{{ $day->leaved_at }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Jour</th>
+                            <th>Arrivée</th>
+                            <th>Départ</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="pangs" role="tabpanel" aria-labelledby="pangs-tab">
+                <table class="table table-sm table-striped dataTable">
+                    <thead>
+                        <tr>
+                            <th>Jour</th>
+                            <th>Quantité</th>
+                            <th>Raison</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($student->pangs as $pang)
+                        <tr>
+                            <td>{{ $pang[0] }}</td>
+                            <td>{{ $pang[1] }}</td>
+                            <td>{{ $pang[3] }}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Jour</th>
+                            <th>Quantité</th>
+                            <th>Raison</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="excuses" role="tabpanel" aria-labelledby="excuses-tab">
+                <table class="table table-sm table-striped dataTable">
+                    <thead>
+                    <tr>
+                        <th>Jour</th>
+                        <th>Raison</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($days as $day)
+                        @if($day->excused)
+                        <tr>
+                            <td>{{ $day->day }}</td>
+                            <td>{{ $day->reason }}</td>
+                        </tr>
+                        @endif
+                    @endforeach
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>Jour</th>
+                        <th>Raison</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection
 @section("scripts")
 <script defer>
+    $('.dataTable').DataTable({
+        "pageLength": 10,
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+        }
+    });
     // Charts Pangs
     var ctx = $("#pangsChart");
     var days = [];
@@ -67,8 +167,6 @@
             checkOut.push(moment("1970-02-01 13:30:00").valueOf());
         @endif
     @endforeach
-        console.log(checkIn);
-        console.log(checkOut);
     var myChart2 = new Chart (ctx2, {
         type: "line",
         data: {
