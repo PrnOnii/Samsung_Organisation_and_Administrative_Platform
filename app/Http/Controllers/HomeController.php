@@ -16,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware("guest");
+        //$this->middleware("guest");
     }
 
     /**
@@ -44,5 +44,10 @@ class HomeController extends Controller
             $student->pangs = $total;
         }
         return view("home", compact("students"));
+    }
+
+    public function notAllowed()
+    {
+        return view('auth.notallowed');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use App\Student;
 
 class RedirectIfAuthenticated
 {
@@ -18,7 +19,11 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/student');
+            $student = Student::where('email', Auth::user()->email)->first();
+            if(Auth::user()->admin === 1)
+                return redirect('/student/');
+            else
+                return redirect('/student/' . $student->id);
         }
 
         return $next($request);
