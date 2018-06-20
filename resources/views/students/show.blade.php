@@ -113,6 +113,7 @@
 <script defer>
     $('.dataTable').DataTable({
         "pageLength": 10,
+        "order" : [[0, "desc"]],
         "language": {
             "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
         }

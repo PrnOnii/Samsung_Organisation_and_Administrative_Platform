@@ -1,10 +1,19 @@
-ameliorer la page etudiant
-implementer l'API microsoft
-faire un mailing a chaque fois qu'une personne passe en dessous des 300 pangs, ou absence (demi-journee)
-Ajouter color vert pour au dessus de 700
-Traquer quel utilisateur fait quoi (Logs)
-Onglet colles, avec username
-Graphique bloc de presence
+CRUD pour : [Excuses (UD), Settings(U), Student(UD), Edit_Pangs(UD), Log_Categories(CU), Promo(UD), User(UD)]
+Ajouter 35h par semaine
+Faire un mailing a chaque fois qu'une personne passe en dessous des 300 pangs, ou absence (demi-journee)
 Agenda intervention
-Redesign charts
 Bloquer des pangs pour l'attente de justification
+Redesign charts
+Creer une page default settings
+
+
+
+
+Ajouter color vert pour au dessus de 700 (Done)
+Traquer quel utilisateur fait quoi (Logs) (Done)
+ameliorer la page etudiant (Done)
+implementer l'API microsoft (Done)
+Graphique bloc de presence (Done)
+
+
+Onglet colles, avec username (abandonné)
