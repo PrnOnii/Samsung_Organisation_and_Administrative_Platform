@@ -190,7 +190,9 @@ class StudentController extends Controller
     public function show(string $login)
     {
         $name = explode(".", $login);
-        $student = Student::where("first_name", $name[0])->where("last_name", $name[1])->first();
+        $firstname = $name[0] ?? "default";
+        $lastname = $name[1] ?? "default";
+        $student = Student::where("first_name", $firstname)->where("last_name", $lastname)->first();
         if(!$student)
             return redirect('/');
         if (Auth::user()->admin === 1 || Auth::user()->email === $student->email) {
