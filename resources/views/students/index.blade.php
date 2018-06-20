@@ -68,6 +68,7 @@
     });
     var table = $('#ajaxStudents').DataTable({
         ajax: "/json",
+        "order": [[1, "asc"]],
         "pageLength": 50,
         "columns": [
             { className: "clickable" },

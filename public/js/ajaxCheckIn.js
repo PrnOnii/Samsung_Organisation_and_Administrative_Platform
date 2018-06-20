@@ -39,9 +39,6 @@ $(".action").click(function(e) {
     window.location = '' + $(this).attr('id') + '?' + str;
 });
 
-$(".chosen").chosen();
-
-
 $( document ).on('click', '.clickable', function(){
     var input = table.$(this).parent().children().find( "input" ).first();
     var tr = table.$(this).parent();

@@ -107,20 +107,21 @@
         <canvas class="col-md-8 offset-md-2" id="pangsChart"></canvas>
         <canvas class="col-md-8 offset-md-2" id="attendanceChart"></canvas>
     </div>
-    @endsection
-    @section("scripts")
-    <script defer>
-        $('.dataTable').DataTable({
-            "pageLength": 10,
-            "language": {
-                "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-            }
-        });
-        // Charts Pangs
-        var ctx = $("#pangsChart");
-        var days = [];
-        var pangs = [];
-        @foreach($student->pangsHistory as $day => $pangs)
+@endsection
+@section("scripts")
+<script defer>
+    $('.dataTable').DataTable({
+        "pageLength": 10,
+        "order" : [[0, "desc"]],
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+        }
+    });
+    // Charts Pangs
+    var ctx = $("#pangsChart");
+    var days = [];
+    var pangs = [];
+    @foreach($student->pangsHistory as $day => $pangs)
     days.push("{{ $day }}");
     pangs.push("{{ $pangs }}");
     @endforeach

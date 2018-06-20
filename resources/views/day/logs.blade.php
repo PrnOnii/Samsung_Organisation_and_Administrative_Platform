@@ -25,8 +25,9 @@
                     </div>
                 </div>
                 <div class="table-responsive mt-3">
-                    <table class="dataTable">
+                    <table class="table table-sm table-striped dataTable">
                         <thead>
+                            <th>ID</th>
                             <th>User</th>
                             <th>Category</th>
                             <th>Action</th>
@@ -34,6 +35,7 @@
                         <tbody>
                             @foreach($logs as $log)
                                 <tr>
+                                    <td>{{ $log->id }}</td>
                                     <td>{{ $log->user->name }}</td>
                                     <td>{{ $log->logCategory->name }}</td>
                                     <td>{{ $log->action }}</td>
@@ -41,6 +43,7 @@
                             @endforeach
                         </tbody>
                         <tfoot>
+                            <th>ID</th>
                             <th>User</th>
                             <th>Category</th>
                             <th>Action</th>
@@ -50,4 +53,22 @@
             </div>
         </div>
     </div>
+@endsection
+@section("scripts")
+<script>
+    $('.dataTable').DataTable({
+        "pageLength": 25,
+        "order" : [[0, "desc"]],
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+        },
+        "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+    });
+</script>
 @endsection
