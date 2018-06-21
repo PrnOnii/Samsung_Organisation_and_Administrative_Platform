@@ -57,6 +57,13 @@
             </div>
         </div>
     </div>
+    @foreach ($students as $student)
+    <div class="tooltip_templates" style="display: none;">
+        <span id="image-{{ $student->id }}">
+            <img src="https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg" />
+        </span>
+    </div>
+    @endforeach
 @endsection
 @section('scripts')
     <script src="{{ asset('js/ajaxCheckIn.js') }}"></script>
@@ -91,7 +98,14 @@
         if(checked === 0)
         {
             $("#alert-refresh").hide();
-            table.ajax.reload();
+            table.ajax.reload(function (){
+                table.$('.image-tooltip').tooltipster({
+                    delay: 50,
+                    contentCloning: true,
+                    theme: 'tooltipster-shadow',
+                    side: 'left'
+                });
+            });
         }
         else
         {

@@ -88,9 +88,9 @@ class StudentController extends Controller
             }
 
             $checkBox = '<input name="students[]" value="' . $student->id . '" type="checkbox">';
-
-            $student->first_name_data = '<a href="/student/' . $student->first_name . '.' . $student->last_name . '">' . ucfirst($student->first_name) . '</a>';
-            $student->last_name_data = '<a href="/student/' . $student->first_name . '.' . $student->last_name . '">' . ucfirst($student->last_name) . '</a>';
+            $tooltip = 'class="image-tooltip" data-tooltip-content="#image-'.$student->id.'"';
+            $student->first_name_data = '<a '. $tooltip .' href="/student/' . $student->first_name . '.' . $student->last_name . '">' . ucfirst($student->first_name) . '</a>';
+            $student->last_name_data = '<a '. $tooltip .' href="/student/' . $student->first_name . '.' . $student->last_name . '">' . ucfirst($student->last_name) . '</a>';
 
             if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null) {
                 $checkIn = $student->checkIn->arrived_at;
