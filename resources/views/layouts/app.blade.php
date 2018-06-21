@@ -15,7 +15,7 @@
     <link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/tooltipster.bundle.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/tooltip-themes/shadow.css') }}" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/sl-1.2.6/datatables.min.css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
 </head>
@@ -128,7 +128,7 @@
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/jquery.sticky.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/tooltipster.bundle.min.js') }}"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/sl-1.2.6/datatables.min.js"></script>
 <script type="text/javascript"  src="{{ asset('js/chosen.jquery.min.js') }}"></script>
 <script src="{{ asset('js/moment.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
