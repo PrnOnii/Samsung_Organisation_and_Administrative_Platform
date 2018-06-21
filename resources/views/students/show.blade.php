@@ -10,14 +10,13 @@
 @section("content")
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <h1 class="my-3">Profil de {{ $student->first_name }} {{ $student->last_name }}</h1>
+            <div class="col-md-8">
+                <h1 class="my-3">{{ ucfirst($student->first_name) }} {{ ucfirst($student->last_name) }} - <strong>{{ $student->total }}</strong> pangs</h1>
             </div>
-            <div class="col-md-4 offset-md-4">              
+            <div class="col-md-2 offset-md-2">              
                 <img class="float-right" src="https://cdn.local.epitech.eu/userprofil/profilview/{{ $student->first_name }}.{{ $student->last_name }}.jpg">
             </div>
         </div>
-        <h2 class="mb-3">{{ $student->total }} pangs</h2>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="checks-tab" data-toggle="tab" href="#checks" role="tab" aria-controls="checks" aria-selected="true">Check-in / out</a>

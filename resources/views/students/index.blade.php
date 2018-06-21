@@ -73,7 +73,16 @@
     $("#checkAll").click(function (){
         $('input:checkbox').prop('checked', this.checked);
     });
-    var table = $('#ajaxStudents').DataTable({
+    var table = $('#ajaxStudents')
+    .on( 'init.dt', function () {
+        table.$('.image-tooltip').tooltipster({
+            delay: 0,
+            contentCloning: true,
+            theme: 'tooltipster-shadow',
+            side: 'left'
+        });
+    } )
+    .DataTable({
         ajax: "/json",
         "order": [[1, "asc"]],
         "pageLength": 50,
@@ -100,7 +109,7 @@
             $("#alert-refresh").hide();
             table.ajax.reload(function (){
                 table.$('.image-tooltip').tooltipster({
-                    delay: 50,
+                    delay: 0,
                     contentCloning: true,
                     theme: 'tooltipster-shadow',
                     side: 'left'
