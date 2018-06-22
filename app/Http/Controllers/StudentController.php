@@ -82,7 +82,7 @@ class StudentController extends Controller
             } else if ($total <= 300) {
                 $student->pangs = '<h4><span class="badge badge-warning">' . $total . '</span></h4>';
             } else if ($total <= 700) {
-                $student->pangs = '<h4><span class="badge badge-info">' . $total . '</span></h4>';
+                $student->pangs = '<h4><span class="badge badge-primary">' . $total . '</span></h4>';
             } else {
                 $student->pangs = '<h4><span class="badge badge-success">' . $total . '</span></h4>';
             }

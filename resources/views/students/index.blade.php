@@ -16,7 +16,7 @@
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Sur la selection ...
                         </button>
-                        <button id="help" class="btn btn-info pl-2"><i class="fas fa-question-circle"></i> Afficher raccourcis clavier</button>
+                        <button id="help" class="btn btn-primary ml-4"><i class="fas fa-question-circle"></i> Afficher raccourcis clavier</button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item action" id="editChecks" href="#"><i class="pr-2 fas fa-user-clock"></i> Editer Check-in / out</a>
                             <a class="dropdown-item action" id="editPangs" href="#"><i class="pr-2 far fa-chart-bar"></i> Ajouter / retirer pangs</a>
