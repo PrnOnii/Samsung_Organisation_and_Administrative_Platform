@@ -96,7 +96,7 @@
         "order": [[1, "asc"]],
         "pageLength": 50,
         "columns": [
-            { data: "id" },
+            { data: "id", visible: false },
             { data: "first_name" },
             { data: "last_name" },
             { data: "pangs" },
