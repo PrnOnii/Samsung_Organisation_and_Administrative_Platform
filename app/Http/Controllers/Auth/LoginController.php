@@ -82,6 +82,10 @@ class LoginController extends Controller
                 ]);
             }
         }
+        elseif($authUser = User::where('email', $user->getEmail())->where('admin', 1)->first())
+        {
+            return $authUser;
+        }
         else
             return false;
     }
