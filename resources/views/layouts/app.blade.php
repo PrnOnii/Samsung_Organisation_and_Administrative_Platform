@@ -13,13 +13,15 @@
     <!-- Styles -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/tooltipster.bundle.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/tooltip-themes/shadow.css') }}" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/sl-1.2.6/datatables.min.css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
 </head>
 <body>
 <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/student') }}">
                 {{ config('app.name', 'Laravel') }}
@@ -124,8 +126,10 @@
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="https://unpkg.com/sweetalert2@7.24.1/dist/sweetalert2.all.js"></script>
 <script src="{{ asset('js/jquery.sticky.js') }}"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+<script type="text/javascript" src="{{ asset('js/tooltipster.bundle.min.js') }}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/sl-1.2.6/datatables.min.js"></script>
 <script type="text/javascript"  src="{{ asset('js/chosen.jquery.min.js') }}"></script>
 <script src="{{ asset('js/moment.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>

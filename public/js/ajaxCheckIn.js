@@ -35,21 +35,14 @@ $(document).on("submit", '.checkOut', function(e) {
 });
 
 $(".action").click(function(e) {
-    str = table.$('input:checkbox[name="students[]"]:checked').serialize();
-    window.location = '' + $(this).attr('id') + '?' + str;
-});
-
-$( document ).on('click', '.clickable', function(){
-    var input = table.$(this).parent().children().find( "input" ).first();
-    var tr = table.$(this).parent();
-    if(input.is(':checked'))
-    {
-        input.attr('checked', false);
-        tr.attr('class', '');
-    }
-    else
-    {
-        input.attr('checked', true);
-        tr.attr('class', 'table-primary');
-    }
+    // str = table.$('input:checkbox[name="students[]"]:checked').serialize();
+    // window.location = '' + $(this).attr('id') + '?' + str;
+    str = '?';
+    rows = table.rows( { selected: true } ).data();
+    console.log(rows);
+    $.each(rows, function(index, value) {
+        str = str + 'students[]=' + value.id + '&'; 
+    });
+    console.log(str);
+    window.location = '' + $(this).attr('id') + str; 
 });
