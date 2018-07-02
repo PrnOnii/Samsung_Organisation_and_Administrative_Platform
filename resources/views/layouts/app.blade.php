@@ -117,10 +117,6 @@
                         </ul>
                     </div>
                 @endif
-                <div class="alert alert-danger">
-                    Les pangs ne sont pas a jours. Merci de ne pas en tenir compte. <br>
-                    La migration sur la nouvelle plateforme se fera ce Lundi 2 Juillet. Merci de verifier vos pangs sur <a href="https://samsung.absences.wac.epitech.eu/student/">l'ancienne plateforme</a> avant cette date.
-                </div>
             </div>
         </div>
     </div>
