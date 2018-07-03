@@ -38,13 +38,24 @@ Route::post("/promo/add", "PromoController@store");
 // Check In / Out
 Route::post("/student/checkIn", "DayController@checkIn")->name("checkIn");
 Route::post("/student/checkOut", "DayController@checkOut")->name("checkOut");
+Route::get("/json", "StudentController@jsonStudentsData");
 
 // Administrative
+
+Route::get("/logs", "DayController@logs")->name("logs");
+
+// Justification
 Route::get("/justify", "DayController@justify")->name("justify");
 Route::post("/justify", "DayController@storeJustify");
+Route::get("/editJustify", "DayController@editJustify")->name("editJustify");
+Route::post("/editJustify", "DayController@updateJustify");
+Route::post("/deleteJustify/{id}", "DayController@deleteJustify")->name("deleteJustify");
+
+// Checks
 Route::get("/editChecks", "DayController@editChecks")->name("editChecks");
 Route::post("/editChecks", "DayController@updateChecks");
+
+// Edit Pangs
 Route::get("/editPangs", "DayController@editPangs")->name("editPangs");
 Route::post("/editPangs", "DayController@updatePangs");
-Route::get("/json", "StudentController@jsonStudentsData");
-Route::get("/logs", "DayController@logs")->name("logs");
+Route::post("/deletePangs/{id}", "DayController@deleteEditPangs")->name("deletePangs");
