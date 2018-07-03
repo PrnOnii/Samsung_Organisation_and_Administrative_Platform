@@ -12,7 +12,7 @@ class Day extends Model
      * @var array
      */
     protected $fillable = [
-        "student_id", "day", "arrived_at", "leaved_at",
+        "student_id", "day", "arrived_at", "leaved_at", "difference", "excused", "reason",
     ];
 
     /**

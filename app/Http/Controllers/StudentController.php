@@ -223,6 +223,7 @@ class StudentController extends Controller
                             $entry[0] = $day->day;
                             $entry[1] = $edit->quantity;
                             $entry[3] = $edit->reason;
+                            $entry[4] = $edit->id;
                             array_push($pangs, $entry);
                             $entry = [];
                             $day->difference -= $edit->quantity;
