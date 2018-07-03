@@ -82,7 +82,6 @@ class ProcessPangs implements ShouldQueue
                 }
                 $arrive = ($day->arrived_at !== null) ? Carbon::createFromFormat("Y-m-d H:i:s", $this->date->toDateString() . " " . $day->arrived_at) : null;
                 $leave = ($day->leaved_at !== null) ? Carbon::createFromFormat("Y-m-d H:i:s", $this->date->toDateString() . " " . $day->leaved_at) : null;
-
                 $morning_loss = 0;
                 $morning_gain = 0;
                 $afternoon_loss = 0;
@@ -92,7 +91,6 @@ class ProcessPangs implements ShouldQueue
 
 
                 if ($arrive !== null) {
-
                     // Check pangs loss
                     // Morning
                     if($arrive >= $this->morning_end) {

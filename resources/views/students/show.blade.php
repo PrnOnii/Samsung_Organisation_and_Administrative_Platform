@@ -63,6 +63,7 @@
                             <th>Jour</th>
                             <th>Quantité</th>
                             <th>Raison</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,6 +72,11 @@
                             <td>{{ $pang[0] }}</td>
                             <td>{{ $pang[1] }}</td>
                             <td>{{ $pang[3] }}</td>
+                            @if(Auth::user()->admin === 1 && isset($pang[4]))
+                                <td><a data-behavior='delete' href="{{ url('/deletePangs/' . $pang[4] ) }}"><i class="fas fa-trash-alt"></i></td>
+                            @else
+                                <td></td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>
@@ -79,6 +85,7 @@
                             <th>Jour</th>
                             <th>Quantité</th>
                             <th>Raison</th>
+                            <th>Actions</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -89,6 +96,7 @@
                         <tr>
                             <th>Jour</th>
                             <th>Raison</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,6 +105,11 @@
                         <tr>
                             <td>{{ $day->day }}</td>
                             <td>{{ $day->reason }}</td>
+                            @if(Auth::user()->admin === 1)
+                            <td><a data-behavior='delete' href="{{ url('/deleteJustify/' . $day->id ) }}"><i class="fas fa-trash-alt"></i></td>
+                            @else
+                            <td></td>
+                            @endif
                         </tr>
                         @endif
                         @endforeach
@@ -105,6 +118,7 @@
                         <tr>
                             <th>Jour</th>
                             <th>Raison</th>
+                            <th>Actions</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -116,7 +130,7 @@
 @endsection
 @section("scripts")
 <script defer>
-    $('.dataTable').DataTable({
+    var table = $('.dataTable').DataTable({
         "pageLength": 10,
         "order" : [[0, "desc"]],
         "language": {
@@ -213,6 +227,44 @@
                 }]
             }
         }
+    });
+</script>
+<script>
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+    });
+    $("[data-behavior='delete']").on('click', function (e) {
+        e.preventDefault();
+
+        swal({
+            title: 'Confirmer',
+            text: 'Etes-vous sur de vouloir supprimer cette entree ?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Oui, supprimer',
+            cancelButtonText: 'Annuler',
+            }).then((result) => {
+                if(result.value) {
+                    table
+                    .row( $(this).parents('tr') )
+                    .remove()
+                    .draw();
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        method: "post",
+                        success: function(){
+                            swal(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                            );
+                        }
+                    })
+                }
+            });
     });
 </script>
 @endsection

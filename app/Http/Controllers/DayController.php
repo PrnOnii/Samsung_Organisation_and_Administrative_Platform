@@ -155,12 +155,20 @@ class DayController extends Controller
         foreach($request->input("students") as $student_id){
             $student = Student::where("id", $student_id)->first();
 
-            Day::where("day", $request->input("day"))
-                ->where("student_id", $student->id)
-                ->update([
+            if ( $day = Day::where("day", $request->input("day"))->where("student_id", $student->id)->first() ) {
+                $day->update([
                     "excused" => true,
                     "reason" => $request->input("reason")
                 ]);
+            } else {
+                Day::create([
+                    "student_id" => $student->id,
+                    "day" => $request->input("day"),
+                    "difference" => 0,
+                    "excused" => 1,
+                    "reason" => $request->input("reason")
+                ]);
+            }
 
             Log::create([
                 "user_id" => Auth::id(),
@@ -172,6 +180,25 @@ class DayController extends Controller
         }
 
         return redirect("/");
+    }
+
+    public function deleteJustify(Int $id) {
+        $date = Carbon::now("Europe/Paris");
+        $user = Auth::user();
+        $justify = Day::find($id);
+        $student = Student::find($justify->student_id);
+
+        Log::create([
+            "user_id" => Auth::id(),
+            "category_id" => 4,
+            "action" => $date->toDateTimeString() . " : $user->name a supprimé l'excuse \"" . $justify->reason . "\" à " . ucfirst($student->first_name) . " " . ucfirst($student->last_name) . " du " . $justify->day . ".",
+        ]);
+        
+        $justify->update([
+            "excused" => 0,
+            "reason" => "",
+        ]);
+        ProcessPangs::dispatch($student, $justify->day);
     }
 
     public function editPangs () {
@@ -209,6 +236,27 @@ class DayController extends Controller
         }
 
         return redirect("/");
+    }
+
+    public function deleteEditPangs (Int $id) {
+        $date = Carbon::now("Europe/Paris");
+        $user = Auth::user();
+        $edit = EditPang::find($id);
+        $student = Student::find($edit->student_id);
+        $day = $edit->day;
+
+        $sign = ($edit->quantity > 0) ? "l'ajout" : "le retrait";
+
+        Log::create([
+            "user_id" => Auth::id(),
+            "category_id" => 6,
+            "action" => $date->toDateTimeString() . " : $user->name a supprimé $sign de " . abs($edit->quantity) . " pangs à " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name) . ".",
+        ]);
+
+        $edit->delete();
+
+        ProcessPangs::dispatch($student, $day);
+
     }
 
     public function editPangSettings () {
