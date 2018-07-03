@@ -182,12 +182,18 @@ class DayController extends Controller
         return redirect("/");
     }
 
-    public function deleteJustify($id) {
+    public function deleteJustify(Int $id) {
         $justify = Day::find($id);
         $justify->update([
             "excused" => 0,
             "reason" => '',
         ]);
+        Log::create([
+            "user_id" => Auth::id(),
+            "category_id" => 4,
+            "action" => $date->toDateTimeString() . " : $user->name a supprimé l'excuse \"". $request->input("reason") ."\" à " . ucfirst($student->first_name) . " " . ucfirst($student->last_name) . " du " . $request->input("day") . ".",
+        ]);
+        ProcessPangs::dispatch($justify->student_id, $justify->day);
     }
 
     public function editPangs () {
@@ -229,7 +235,21 @@ class DayController extends Controller
 
     public function deleteEditPangs (Int $id) {
         $edit = EditPang::find($id);
+        $student_id = $edit->student_id;
+        $day = $edit->day;
+
+        $sign = ($edit->quantity > 0) ? "l'ajout" : "le retrait";
+
+        Log::create([
+            "user_id" => Auth::id(),
+            "category_id" => 6,
+            "action" => $date->toDateTimeString() . " : $user->name a supprimé $sign de " . abs($edit->quantity) . " pangs à " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name) . ".",
+        ]);
+
         $edit->delete();
+
+        ProcessPangs::dispatch($student_id, $day);
+
     }
 
     public function editPangSettings () {
