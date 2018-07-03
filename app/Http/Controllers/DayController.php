@@ -183,17 +183,22 @@ class DayController extends Controller
     }
 
     public function deleteJustify(Int $id) {
+        $date = Carbon::now("Europe/Paris");
+        $user = Auth::user();
         $justify = Day::find($id);
-        $justify->update([
-            "excused" => 0,
-            "reason" => '',
-        ]);
+        $student = Student::find($justify->student_id);
+
         Log::create([
             "user_id" => Auth::id(),
             "category_id" => 4,
-            "action" => $date->toDateTimeString() . " : $user->name a supprimé l'excuse \"". $request->input("reason") ."\" à " . ucfirst($student->first_name) . " " . ucfirst($student->last_name) . " du " . $request->input("day") . ".",
+            "action" => $date->toDateTimeString() . " : $user->name a supprimé l'excuse \"" . $justify->reason . "\" à " . ucfirst($student->first_name) . " " . ucfirst($student->last_name) . " du " . $justify->day . ".",
         ]);
-        ProcessPangs::dispatch($justify->student_id, $justify->day);
+        
+        $justify->update([
+            "excused" => 0,
+            "reason" => "",
+        ]);
+        ProcessPangs::dispatch($student, $justify->day);
     }
 
     public function editPangs () {
@@ -234,8 +239,10 @@ class DayController extends Controller
     }
 
     public function deleteEditPangs (Int $id) {
+        $date = Carbon::now("Europe/Paris");
+        $user = Auth::user();
         $edit = EditPang::find($id);
-        $student_id = $edit->student_id;
+        $student = Student::find($edit->student_id);
         $day = $edit->day;
 
         $sign = ($edit->quantity > 0) ? "l'ajout" : "le retrait";
@@ -248,7 +255,7 @@ class DayController extends Controller
 
         $edit->delete();
 
-        ProcessPangs::dispatch($student_id, $day);
+        ProcessPangs::dispatch($student, $day);
 
     }
 
