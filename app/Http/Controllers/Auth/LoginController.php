@@ -49,6 +49,8 @@ class LoginController extends Controller
 
     public function handleProviderCallback(Request $request)
     {
+        if(AUth::check())
+            return redirect('/');
         $user = Socialite::driver('live')->user();
         $authUser = $this->findOrCreateUser($user);
         if($authUser)
@@ -79,6 +81,10 @@ class LoginController extends Controller
                     'email' => $user->getEmail(),
                 ]);
             }
+        }
+        elseif($authUser = User::where('email', $user->getEmail())->where('admin', 1)->first())
+        {
+            return $authUser;
         }
         else
             return false;

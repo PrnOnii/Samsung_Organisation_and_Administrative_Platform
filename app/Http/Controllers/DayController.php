@@ -34,7 +34,7 @@ class DayController extends Controller
         Log::create([
             "user_id" => Auth::id(),
             "category_id" => 1,
-            "action" => $date->toDateTimeString() . " : " . $user->name . " has checked " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name) . " in.",
+            "action" => $date->toDateTimeString() . " : $user->name a pointé " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name),
         ]);
         ProcessPangs::dispatch();
         echo $date->toTimeString();
@@ -52,7 +52,7 @@ class DayController extends Controller
         Log::create([
             "user_id" => Auth::id(),
             "category_id" => 1,
-            "action" => $date->toDateTimeString() . " : " . $user->name . " has checked " . $student->first_name  . " " .ucfirst($student->last_name) . " out.",
+            "action" => $date->toDateTimeString() . " : $user->name a dépointé " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name),
         ]);
 
         ProcessPangs::dispatch();
@@ -97,7 +97,7 @@ class DayController extends Controller
                 Log::create([
                     "user_id" => Auth::id(),
                     "category_id" => 2,
-                    "action" => $date->toDateTimeString() . " : " . $user->name . " updated check-in time from  " . $day->arrived_at . " to " . $request->input("arrived_at") . ":00 for " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name) . " on " . $request->input("day"),
+                    "action" => $date->toDateTimeString() . " : $user->name a modifié l'heure de pointage de " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name) . " de $day->arrived_at à " . $request->input("arrived_at") . ":00 le " . $request->input("day"),
                     ]);
 
                 Day::where("day", $request->input("day"))
@@ -118,7 +118,7 @@ class DayController extends Controller
                 Log::create([
                     "user_id" => Auth::id(),
                     "category_id" => 2,
-                    "action" => $date->toDateTimeString() . " : " . $user->name . " updated check-in time from  " . $day->arrived_at . " to " . $request->input("arrived_at") . ":00 for " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name) . " on " . $request->input("day"),
+                    "action" => $date->toDateTimeString() . " : $user->name a modifié l'heure de dépointage de " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name) . " de $day->leaved_at à " . $request->input("leaved_at") . ":00 le " . $request->input("day"),
                 ]);
             }
         }
@@ -165,7 +165,7 @@ class DayController extends Controller
             Log::create([
                 "user_id" => Auth::id(),
                 "category_id" => 3,
-                "action" => $date->toDateTimeString() . " : " . $user->name . " added an excuse on " . $request->input("day") . "for " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name) . " : " . $request->input("reason"),
+                "action" => $date->toDateTimeString() . " : $user->name a ajouté une excuse à " . ucfirst($student->first_name) . " " . ucfirst($student->last_name) . " le " . $request->input("day") . " : " . $request->input("reason"),
             ]);
 
             ProcessPangs::dispatch(Student::find($student_id), $request->input("day"));
@@ -192,10 +192,11 @@ class DayController extends Controller
         foreach ($request->input("students") as $student_id) {
             $student = Student::where("id", $student_id)->first();
 
+            $sign = ($request->input("quantity") > 0) ? "ajouté" : "retiré";
             Log::create([
                 "user_id" => Auth::id(),
-                "category_id" => 3,
-                "action" => $date->toDateTimeString() . " : " . $user->name . " added " . $request->input("quantity") . " pangs for " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name) . " : " . $request->input("reason"),
+                "category_id" => 5,
+                "action" => $date->toDateTimeString() . " : $user->name a $sign " . abs($request->input('quantity')) . " pangs à " . ucfirst($student->first_name)  . " " .ucfirst($student->last_name) . " : " . $request->input("reason"),
             ]);
 
             EditPang::create([
@@ -235,6 +236,6 @@ class DayController extends Controller
     public function logs()
     {
         $logs = Log::all();
-        return view("students.logs", compact("logs"));
+        return view("day.logs", compact("logs"));
     }
 }

@@ -82,15 +82,14 @@ class StudentController extends Controller
             } else if ($total <= 300) {
                 $student->pangs = '<h4><span class="badge badge-warning">' . $total . '</span></h4>';
             } else if ($total <= 700) {
-                $student->pangs = '<h4><span class="badge badge-info">' . $total . '</span></h4>';
+                $student->pangs = '<h4><span class="badge badge-primary">' . $total . '</span></h4>';
             } else {
                 $student->pangs = '<h4><span class="badge badge-success">' . $total . '</span></h4>';
             }
 
-            $checkBox = '<input name="students[]" value="' . $student->id . '" type="checkbox">';
-
-            $student->first_name_data = '<a href="/student/' . $student->first_name . '.' . $student->last_name . '">' . ucfirst($student->first_name) . '</a>';
-            $student->last_name_data = '<a href="/student/' . $student->first_name . '.' . $student->last_name . '">' . ucfirst($student->last_name) . '</a>';
+            $tooltip = 'class="image-tooltip" data-tooltip-content="#image-'.$student->id.'"';
+            $student->first_name_data = '<a '. $tooltip .' href="/student/' . $student->first_name . '.' . $student->last_name . '">' . ucfirst($student->first_name) . '</a>';
+            $student->last_name_data = '<a '. $tooltip .' href="/student/' . $student->first_name . '.' . $student->last_name . '">' . ucfirst($student->last_name) . '</a>';
 
             if (is_object($student->checkIn) && $student->checkIn->day === \Carbon\Carbon::now()->toDateString() && $student->checkIn->arrived_at !== null) {
                 $checkIn = $student->checkIn->arrived_at;
@@ -115,7 +114,7 @@ class StudentController extends Controller
                     $checkOut = '';
                 }
             }
-            array_push($data, [$checkBox, $student->first_name_data, $student->last_name_data, $student->pangs, $student->promo->name, $checkIn, $checkOut]);
+            array_push($data, ['id' => $student->id, 'first_name' => $student->first_name_data, 'last_name' => $student->last_name_data, 'pangs' => $student->pangs, 'promo' => $student->promo->name, 'checkin' => $checkIn, 'checkout' => $checkOut]);
         }
         $json = ['data' => $data];
         echo json_encode($json);
