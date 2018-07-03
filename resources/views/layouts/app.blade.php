@@ -58,9 +58,6 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                             <a href="{{ route('addPromo') }}" class="dropdown-item">
-                                Voir les promotions
-                            </a>
-                            <a href="{{ route('addStudentBulk') }}" class="dropdown-item">
                                 Ajouter une promotion
                             </a>
                         </div>

@@ -185,8 +185,8 @@ class DayController extends Controller
     public function deleteJustify($id) {
         $justify = Day::find($id);
         $justify->update([
-            "excused" => false,
-            "reason" => null,
+            "excused" => 0,
+            "reason" => '',
         ]);
     }
 
