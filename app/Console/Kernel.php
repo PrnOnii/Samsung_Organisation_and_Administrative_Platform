@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-//         $schedule->command("ProcessPangs")->everyMinute();
+        $schedule->job(new ProcessPangs)->everyMinute();
     }
 
     /**
