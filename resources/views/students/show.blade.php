@@ -63,6 +63,7 @@
                             <th>Jour</th>
                             <th>Quantité</th>
                             <th>Raison</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,6 +72,7 @@
                             <td>{{ $pang[0] }}</td>
                             <td>{{ $pang[1] }}</td>
                             <td>{{ $pang[3] }}</td>
+                            <td><a data-behavior='delete' href="{{ url('/deletePangs/' . $pang[4] ) }}"><i class="fas fa-trash-alt"></i></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -79,6 +81,7 @@
                             <th>Jour</th>
                             <th>Quantité</th>
                             <th>Raison</th>
+                            <th>Actions</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -89,6 +92,7 @@
                         <tr>
                             <th>Jour</th>
                             <th>Raison</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,6 +101,7 @@
                         <tr>
                             <td>{{ $day->day }}</td>
                             <td>{{ $day->reason }}</td>
+                            <td><a data-behavior='delete' href="{{ url('/deleteJustify/' . $day->id ) }}"><i class="fas fa-trash-alt"></i></td>
                         </tr>
                         @endif
                         @endforeach
@@ -105,6 +110,7 @@
                         <tr>
                             <th>Jour</th>
                             <th>Raison</th>
+                            <th>Actions</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -213,6 +219,35 @@
                 }]
             }
         }
+    });
+</script>
+<script>
+    $("[data-behavior='delete']").on('click', function (e) {
+        e.preventDefault();
+
+        swal({
+            title: 'Confirmer',
+            text: 'Etes-vous sur de vouloir supprimer cette entree ?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Oui, supprimer',
+            cancelButtonText: 'Annuler',
+            }).then((result) => {
+                if(result.value) {
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        method: "POST",
+                        success: function(){
+                            swal(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                            );
+                        }
+                    })
+                }
+            });
     });
 </script>
 @endsection
