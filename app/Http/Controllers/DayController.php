@@ -193,12 +193,16 @@ class DayController extends Controller
             "category_id" => 4,
             "action" => $date->toDateTimeString() . " : $user->name a supprimé l'excuse \"" . $justify->reason . "\" à " . ucfirst($student->first_name) . " " . ucfirst($student->last_name) . " du " . $justify->day . ".",
         ]);
-        
-        $justify->update([
-            "excused" => 0,
-            "reason" => "",
-        ]);
-        ProcessPangs::dispatch($student, $justify->day);
+
+        if($justify->day > $date->toDateString()) {
+            $justify->delete();
+        } else {
+            $justify->update([
+                "excused" => 0,
+                "reason" => "",
+            ]);
+            ProcessPangs::dispatch($student, $justify->day);
+        }
     }
 
     public function editPangs () {
