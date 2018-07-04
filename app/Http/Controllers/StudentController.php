@@ -60,10 +60,10 @@ class StudentController extends Controller
         $data = [];
         ProcessPangs::dispatch();
         $students = Student::all();
+        $date = Carbon::now("Europe/Paris");
         foreach ($students as $student) {
             $days = Day::where("student_id", $student->id)->orderBy("day", "asc")->get();
-            $lastItem = count($days) - 1;
-            $student->checkIn = $days[$lastItem];
+            $student->checkIn = Day::where("student_id", $student->id)->where("day", $date->toDateString())->first();
             $total = 1000;
             foreach ($days as $day) {
                 $total += $day->difference;
