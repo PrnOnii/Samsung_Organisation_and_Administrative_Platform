@@ -69,6 +69,7 @@
                     <tbody>
                         @foreach ($student->pangs as $pang)
                         <tr>
+                            {{-- $pangs[4] = editPang ID --}}
                             <td>{{ $pang[0] }}</td>
                             <td>{{ $pang[1] }}</td>
                             <td>{{ $pang[3] }}</td>
