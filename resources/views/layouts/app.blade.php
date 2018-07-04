@@ -58,9 +58,6 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                             <a href="{{ route('addPromo') }}" class="dropdown-item">
-                                Voir les promotions
-                            </a>
-                            <a href="{{ route('addStudentBulk') }}" class="dropdown-item">
                                 Ajouter une promotion
                             </a>
                         </div>
@@ -117,10 +114,6 @@
                         </ul>
                     </div>
                 @endif
-                <div class="alert alert-danger">
-                    Les pangs ne sont pas a jours. Merci de ne pas en tenir compte. <br>
-                    La migration sur la nouvelle plateforme se fera ce Lundi 2 Juillet. Merci de verifier vos pangs sur <a href="https://samsung.absences.wac.epitech.eu/student/">l'ancienne plateforme</a> avant cette date.
-                </div>
             </div>
         </div>
     </div>
